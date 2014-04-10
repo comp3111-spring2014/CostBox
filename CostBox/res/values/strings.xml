@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="hello">CostBox 1.0</string>
+  <string name="app_name">Authroization</string>
+  <string name="strEditButton">修改</string>
+  <string name="strMenu1">Delete</string>
+  <string name="strAddButton">新增</string>
+  <string name="strDeleteButton">刪除</string>
+  <string name="ADD">ADD</string>
+  <string name="EDIT">EDIT</string>
+  <string name="DEL">DEL</string>
+  <string name="CostMoney">$ 0</string>
+  <string name="CostBox">CostBox</string>
+  <string name="UCost">UCost</string>
+  <string name="Upay4">UPay4</string>
+  <string name="meun_save">save</string>
+   <string name="piebutton">Pie</string>
+	<string name="linebutton">Line</string>
+    <string name="doughnut">Change</string>
+	<string name="showchart">Here is the chart</string>
+	<string name="start">Start Date</string>
+	<string name="end">End Date</string>
+	<string name="app_id">222473687961300</string>
+    <string name="share">Share</string>
+    <string name="progress_dialog_text">Announcing, please wait...</string>
+	
+</resources>
