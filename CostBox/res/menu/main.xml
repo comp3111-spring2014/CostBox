@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <menu xmlns:android="http://schemas.android.com/apk/res/android">
+        <item android:id="@+id/menu_search"  
+              android:icon="@drawable/ic_action_search"
+              android:showAsAction="ifRoom|collapseActionView"
+              android:actionViewClass="android.widget.SearchView"
+               /> 
+         <item android:id="@+id/file"
+               android:icon="@drawable/ic_action_overflow"
+               android:showAsAction="always">
+             <!-- "file" submenu -->
+            <menu>
+               <item android:id="@+id/menu_setting"
+                     android:title="Setting"
+                     android:showAsAction="never"/>
+               <item android:id="@+id/menu_help"
+                     android:title="Help" 
+                     android:showAsAction="never"/>
+               <item android:id="@+id/menu_about"
+                     android:title="About"
+                     android:showAsAction="never"/>
+           </menu>
+         </item>
+
+    </menu>
+    
+    
+    

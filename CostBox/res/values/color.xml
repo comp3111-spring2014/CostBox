@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <drawable name="black">#000000</drawable>
+  <drawable name="white">#FFFFFFFF</drawable>
+  <drawable name="red">#FF0000</drawable>
+  <drawable name="warm">#9AFFD700</drawable>
+  <drawable name="alphe">#00FFD700</drawable>
+  <drawable name="blue">#A94F94CD</drawable>
+  <drawable name="lightyellow">#FFFACD</drawable>
+  <drawable name="lightblue">#CCFFFF</drawable>
+  <drawable name="lightblue2">#99CCFF</drawable>
+  <drawable name="huopo1">#FF9900</drawable>
+  <drawable name="huopo2">#FFFF00</drawable>
+  <drawable name="huopo3">#0099CC</drawable>
+  <drawable name="commentbg">#550099CC</drawable>
+  <drawable name="rouhe1">#99CCCC</drawable>
+  <drawable name="rouhe2">#FFCC99</drawable>
+  <drawable name="rouhe3">#FFCCCC</drawable>
+  <drawable name="greybg">#FCFCFC</drawable>
+  <drawable name="greydivide">#ADADAD</drawable>
+  <drawable name="greytran">#DDDDFF</drawable>
+  
+</resources>
