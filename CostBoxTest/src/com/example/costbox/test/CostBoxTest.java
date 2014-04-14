@@ -37,14 +37,48 @@ public class CostBoxTest extends ActivityInstrumentationTestCase2<CostBox> {
 		assertNotNull(getActivity());
 	}
 	
-//	public void testBook()
-//	{
-//		solo.clickOnView(solo.getView(com.example.costbox.R.id.book_select));
-//		solo.clickOnView(solo.getView(com.example.costbox.R.id.add_button));
-//	}
+	public void testBook()
+	{
+		solo.clickOnView(solo.getView(com.example.costbox.R.id.book_select));
+		solo.enterText(1, "100");
+		solo.clickOnView(solo.getView(com.example.costbox.R.id.add_button));
+	}
+	public void testFood()
+	{
+		solo.clickOnView(solo.getView(com.example.costbox.R.id.food_select));
+		solo.enterText(1, "100");
+		solo.clickOnView(solo.getView(com.example.costbox.R.id.add_button));
+	}
+	public void testEnter()
+	{
+		solo.clickOnView(solo.getView(com.example.costbox.R.id.enter_select));
+		solo.enterText(1, "100");
+		solo.clickOnView(solo.getView(com.example.costbox.R.id.add_button));
+	}
+	public void testTravel()
+	{
+		solo.clickOnView(solo.getView(com.example.costbox.R.id.travel_select));
+		solo.enterText(1, "100");
+		solo.clickOnView(solo.getView(com.example.costbox.R.id.add_button));
+	}
+	public void testStudy()
+	{
+		solo.clickOnView(solo.getView(com.example.costbox.R.id.study_select));
+		solo.enterText(1, "100");
+		solo.clickOnView(solo.getView(com.example.costbox.R.id.add_button));
+	}
 	
 	
-	public void testDetail(){
+	public void testZSummary(){
+		solo.setActivityOrientation(Solo.LANDSCAPE);
+		solo.clickOnView(solo.getView(com.example.costbox.R.id.piechart));
+		solo.clickOnView(solo.getView(com.example.costbox.R.id.doughnut));
+		solo.clickOnView(solo.getView(com.example.costbox.R.id.barchart));
+		solo.clickOnView(solo.getView(com.example.costbox.R.id.linechart));
+	}
+	
+	
+	public void testYDetail(){
 		solo.assertCurrentActivity("Wrong activity", CostBox.class);
 		solo.clickInList(0);     // select on the first item of the list view 
 		if(solo.waitForActivity(CostDetail.class)){
@@ -71,13 +105,15 @@ public class CostBoxTest extends ActivityInstrumentationTestCase2<CostBox> {
 //			 solo.goBack(); //  Simulates pressing the hardware back key. Do nothing, finally just return;
 		}
 		
-		solo.clickInList(0);
-		if(solo.waitForActivity(CostDetail.class)){
-			solo.clickOnView(solo.getView(com.example.costbox.R.id.trashbt));
-			solo.clickOnButton("Yes");
-		}
+			solo.clickInList(0);
+			if(solo.waitForActivity(CostDetail.class)){
+				solo.clickOnView(solo.getView(com.example.costbox.R.id.trashbt));
+				solo.clickOnButton("Yes");
+			}
 		
 		solo.clickLongInList(0);
+		
+		
 	}
 	
 	
