@@ -37,7 +37,7 @@ public class CostBoxTest extends ActivityInstrumentationTestCase2<CostBox> {
 		assertNotNull(getActivity());
 	}
 	
-	public void testBook()
+	public void test()
 	{
 		solo.clickOnView(solo.getView(com.example.costbox.R.id.book_select));
 		solo.enterText(1, "100");
@@ -45,46 +45,23 @@ public class CostBoxTest extends ActivityInstrumentationTestCase2<CostBox> {
 		solo.clickOnView(solo.getView(com.example.costbox.R.id.book_select));
 		solo.enterText(1, "100");
 		solo.clickOnView(solo.getView(com.example.costbox.R.id.add_button));
-	}
-	public void testFood()
-	{
+
 		solo.clickOnView(solo.getView(com.example.costbox.R.id.food_select));
 		solo.enterText(1, "100");
 		solo.clickOnView(solo.getView(com.example.costbox.R.id.add_button));
-	}
-	public void testEnter()
-	{
+
 		solo.clickOnView(solo.getView(com.example.costbox.R.id.enter_select));
 		solo.enterText(1, "100");
 		solo.clickOnView(solo.getView(com.example.costbox.R.id.add_button));
-	}
-	public void testTravel()
-	{
+
 		solo.clickOnView(solo.getView(com.example.costbox.R.id.travel_select));
 		solo.enterText(1, "100");
 		solo.clickOnView(solo.getView(com.example.costbox.R.id.add_button));
-	}
-	public void testStudy()
-	{
+
 		solo.clickOnView(solo.getView(com.example.costbox.R.id.study_select));
 		solo.enterText(1, "100");
 		solo.clickOnView(solo.getView(com.example.costbox.R.id.add_button));
-	}
-	
-	
-	public void testZSummary() throws Exception {
-		solo.setActivityOrientation(Solo.LANDSCAPE);
-		if(solo.waitForActivity(Summary.class)){
-			solo.clickOnView(solo.getView(com.example.costbox.R.id.piechart));
-			solo.clickOnView(solo.getView(com.example.costbox.R.id.doughnut));
-			solo.clickOnView(solo.getView(com.example.costbox.R.id.barchart));
-			solo.clickOnView(solo.getView(com.example.costbox.R.id.linechart));
-		}
-		solo.setActivityOrientation(Solo.PORTRAIT);
-	}
-	
-	
-	public void testDetail(){
+
 		solo.assertCurrentActivity("Wrong activity", CostBox.class);
 		solo.clickInList(0);     // select on the first item of the list view 
 		if(solo.waitForActivity(CostDetail.class)){
@@ -118,6 +95,16 @@ public class CostBoxTest extends ActivityInstrumentationTestCase2<CostBox> {
 			}
 		
 		solo.clickLongInList(0);
+		solo.goBack();
 		
+		
+		solo.setActivityOrientation(Solo.LANDSCAPE);
+		if(solo.waitForActivity(Summary.class)){
+			solo.clickOnView(solo.getView(com.example.costbox.R.id.piechart));
+			solo.clickOnView(solo.getView(com.example.costbox.R.id.doughnut));
+			solo.clickOnView(solo.getView(com.example.costbox.R.id.barchart));
+			solo.clickOnView(solo.getView(com.example.costbox.R.id.linechart));
+		}
+		solo.setActivityOrientation(Solo.PORTRAIT);
 	}
 }
