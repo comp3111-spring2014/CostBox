@@ -97,7 +97,7 @@ public class CostBoxTest extends ActivityInstrumentationTestCase2<CostBox> {
 		solo.clickLongInList(0);
 		solo.goBack();
 		
-		
+		/*
 		solo.setActivityOrientation(Solo.LANDSCAPE);
 		if(solo.waitForActivity(Summary.class)){
 			solo.clickOnView(solo.getView(com.example.costbox.R.id.piechart));
@@ -106,5 +106,6 @@ public class CostBoxTest extends ActivityInstrumentationTestCase2<CostBox> {
 			solo.clickOnView(solo.getView(com.example.costbox.R.id.linechart));
 		}
 		solo.setActivityOrientation(Solo.PORTRAIT);
+		*/
 	}
 }
