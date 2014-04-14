@@ -26,12 +26,12 @@ public class CostBoxTest extends ActivityInstrumentationTestCase2<CostBox> {
 	} 
 
 
-//	@Override 
-//	protected void tearDown() throws Exception { 
-//	//this method is called every time after any test execution 
-//	// we want to clean the texts 
-//	solo.finishOpenedActivities();
-//	} 
+	@Override 
+	protected void tearDown() throws Exception { 
+	//this method is called every time after any test execution 
+	// we want to clean the texts 
+	solo.finishOpenedActivities();
+	} 
 	
 	public void testView(){
 		assertNotNull(getActivity());
@@ -69,13 +69,13 @@ public class CostBoxTest extends ActivityInstrumentationTestCase2<CostBox> {
 	}
 	
 	*/
-	public void testZSummary(){
-		solo.setActivityOrientation(Solo.LANDSCAPE);
-		solo.clickOnView(solo.getView(com.example.costbox.R.id.piechart));
-		solo.clickOnView(solo.getView(com.example.costbox.R.id.doughnut));
-		solo.clickOnView(solo.getView(com.example.costbox.R.id.barchart));
-		solo.clickOnView(solo.getView(com.example.costbox.R.id.linechart));
-	}
+	// public void testZSummary(){
+	// 	solo.setActivityOrientation(Solo.LANDSCAPE);
+	// 	solo.clickOnView(solo.getView(com.example.costbox.R.id.piechart));
+	// 	solo.clickOnView(solo.getView(com.example.costbox.R.id.doughnut));
+	// 	solo.clickOnView(solo.getView(com.example.costbox.R.id.barchart));
+	// 	solo.clickOnView(solo.getView(com.example.costbox.R.id.linechart));
+	// }
 	
 	/*
 	public void testYDetail(){
