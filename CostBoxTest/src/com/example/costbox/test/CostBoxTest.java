@@ -36,7 +36,7 @@ public class CostBoxTest extends ActivityInstrumentationTestCase2<CostBox> {
 	public void testView(){
 		assertNotNull(getActivity());
 	}
-	
+	/*
 	public void testBook()
 	{
 		solo.clickOnView(solo.getView(com.example.costbox.R.id.book_select));
@@ -68,7 +68,7 @@ public class CostBoxTest extends ActivityInstrumentationTestCase2<CostBox> {
 		solo.clickOnView(solo.getView(com.example.costbox.R.id.add_button));
 	}
 	
-	
+	*/
 	public void testZSummary(){
 		solo.setActivityOrientation(Solo.LANDSCAPE);
 		solo.clickOnView(solo.getView(com.example.costbox.R.id.piechart));
