@@ -42,6 +42,9 @@ public class CostBoxTest extends ActivityInstrumentationTestCase2<CostBox> {
 		solo.clickOnView(solo.getView(com.example.costbox.R.id.book_select));
 		solo.enterText(1, "100");
 		solo.clickOnView(solo.getView(com.example.costbox.R.id.add_button));
+		solo.clickOnView(solo.getView(com.example.costbox.R.id.book_select));
+		solo.enterText(1, "100");
+		solo.clickOnView(solo.getView(com.example.costbox.R.id.add_button));
 	}
 	public void testFood()
 	{
@@ -69,16 +72,19 @@ public class CostBoxTest extends ActivityInstrumentationTestCase2<CostBox> {
 	}
 	
 	
-	public void testZSummary(){
+	public void testZSummary() throws Exception {
 		solo.setActivityOrientation(Solo.LANDSCAPE);
-		solo.clickOnView(solo.getView(com.example.costbox.R.id.piechart));
-		solo.clickOnView(solo.getView(com.example.costbox.R.id.doughnut));
-		solo.clickOnView(solo.getView(com.example.costbox.R.id.barchart));
-		solo.clickOnView(solo.getView(com.example.costbox.R.id.linechart));
+		if(solo.waitForActivity(Summary.class)){
+			solo.clickOnView(solo.getView(com.example.costbox.R.id.piechart));
+			solo.clickOnView(solo.getView(com.example.costbox.R.id.doughnut));
+			solo.clickOnView(solo.getView(com.example.costbox.R.id.barchart));
+			solo.clickOnView(solo.getView(com.example.costbox.R.id.linechart));
+		}
+		solo.setActivityOrientation(Solo.PORTRAIT);
 	}
 	
 	
-	public void testYDetail(){
+	public void testDetail(){
 		solo.assertCurrentActivity("Wrong activity", CostBox.class);
 		solo.clickInList(0);     // select on the first item of the list view 
 		if(solo.waitForActivity(CostDetail.class)){
@@ -113,9 +119,5 @@ public class CostBoxTest extends ActivityInstrumentationTestCase2<CostBox> {
 		
 		solo.clickLongInList(0);
 		
-		
 	}
-	
-	
-	
 }
