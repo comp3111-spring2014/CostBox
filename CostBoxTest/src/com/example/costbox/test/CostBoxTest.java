@@ -77,7 +77,7 @@ public class CostBoxTest extends ActivityInstrumentationTestCase2<CostBox> {
 		solo.clickOnView(solo.getView(com.example.costbox.R.id.linechart));
 	}
 	
-	
+	/*
 	public void testYDetail(){
 		solo.assertCurrentActivity("Wrong activity", CostBox.class);
 		solo.clickInList(0);     // select on the first item of the list view 
@@ -115,6 +115,7 @@ public class CostBoxTest extends ActivityInstrumentationTestCase2<CostBox> {
 		
 		
 	}
+	*/
 	
 	
 }
