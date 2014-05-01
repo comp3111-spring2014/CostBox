@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+<PreferenceCategory android:title="Common" android:key="set_common">
+    <Preference
+        android:key="category_edit"
+        android:title="Gategory Edit"
+        android:summary="Select Initial Categories">
+    </Preference> 
+    <ListPreference
+        android:key="default_currency"
+        android:title="Currency"
+        android:dialogTitle="Default Currency"
+        android:entries="@array/currency"
+        android:summary="To Choose a Default Currency"
+        android:entryValues="@array/currency_value">
+     </ListPreference>
+     <EditTextPreference
+        android:defaultValue="1000"
+        android:key="overflow_alert"
+        android:name="OverFlow Alert"
+        android:summary="To Set An Overflow Alert"
+        android:title="Overflow Alert" />
+      <ListPreference
+        android:key="summary_view"
+        android:title="Default Pie Chart Period"
+        android:dialogTitle="Default Pie Chart Period"
+        android:entries="@array/summary"
+        android:summary="To Choose a Pie Chart Period"
+        android:entryValues="@array/summary_value">
+     </ListPreference>  
+ 
+</PreferenceCategory>
+<PreferenceCategory android:title="SNS" android:key="set_sns">    
+        <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="FB"
+        android:title="FaceBook" />
+</PreferenceCategory>
+</PreferenceScreen>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string-array name="currency">
+  <item>HKD</item>
+  <item>RMB</item>
+  <item>USD</item>
+</string-array>
+<string-array name="currency_value">
+  <item>001</item>
+  <item>002</item>
+  <item>003</item>
+</string-array>
+<string-array name="summary">
+  <item>Today</item>
+  <item>Past 3 days</item>
+  <item>Past week</item>
+  <item>Past month</item>
+</string-array>
+<string-array name="summary_value">
+  <item>004</item>
+  <item>005</item>
+  <item>006</item>
+  <item>007</item>
+</string-array>
+</resources>

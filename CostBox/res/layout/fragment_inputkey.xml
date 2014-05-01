@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/lightblue2"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:id="@+id/input_linear_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <EditText
+                android:id="@+id/editTT"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10" >
+
+                <requestFocus />
+            </EditText>
+
+            <Button
+                android:id="@+id/choose_pic"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/ic_action_attach" />
+
+            <Button
+                android:id="@+id/take_pic"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/ic_action_photo" />
+
+            <Button
+                android:id="@+id/add_comments"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/ic_action_edit" />
+
+        </LinearLayout>
+         
+         <android.inputmethodservice.KeyboardView
+            android:id="@+id/keyboard_view"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:background="@drawable/alphe"
+            android:keyBackground="@drawable/btn_keyboard_key" 
+            android:keyTextColor="@drawable/white"
+            android:visibility="gone" />
+
+         <LinearLayout
+             android:id="@+id/edit_context_below_fragment"
+             android:layout_width="fill_parent"
+             android:layout_height="fill_parent"
+             android:layout_alignParentBottom="true"
+             android:layout_below="@+id/input_linear_layout"
+             android:layout_centerHorizontal="true"
+             android:orientation="vertical" >
+
+         </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

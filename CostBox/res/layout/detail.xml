@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#dddddd" >
+
+    <TextView
+        android:id="@+id/Category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/cate_image"
+        android:layout_alignLeft="@+id/detailcost"
+        android:layout_alignRight="@+id/detailcost"
+        android:layout_marginBottom="12dp"
+        android:gravity="center_horizontal"
+        android:text="Title"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="@dimen/dim20" />
+
+    <ImageView
+        android:id="@+id/category_image"
+        android:layout_width="38dp"
+        android:layout_height="34dp"
+        android:layout_alignBottom="@+id/detailimage"
+        android:layout_marginBottom="12dp"
+        android:layout_marginLeft="15dp"
+        android:layout_toRightOf="@+id/detailimage"
+        android:src="@drawable/hkd" />
+
+    <ImageView
+        android:id="@+id/cate_image"
+        android:layout_width="49dp"
+        android:layout_height="49dp"
+        android:layout_above="@+id/detailcost"
+        android:layout_alignLeft="@+id/category_image"
+        android:src="@drawable/cardfile" />
+
+    <ImageView
+        android:id="@+id/detailimage"
+        android:layout_width="150dp"
+        android:layout_height="120dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="21dp"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/beauty" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:layout_above="@+id/returnbt"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/category_image"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/blank_notebook"
+        android:textSize="@dimen/dim20" />
+
+    <TextView
+        android:id="@+id/detailcost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/category_image"
+        android:layout_alignRight="@+id/returnbt"
+        android:layout_toRightOf="@+id/cate_image"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="55"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@drawable/red"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/comments"
+        android:layout_width="280dp"
+        android:layout_height="240dp"
+        android:layout_above="@+id/returnbt"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/returnbt"
+        android:layout_alignTop="@+id/imageView1"
+        android:layout_marginLeft="40dp"
+        android:gravity="top"
+        android:hint="add some comments..."
+        android:background="@null"
+        android:textSize="@dimen/dim20" />
+
+    <Button
+        android:id="@+id/returnbt"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/ic_action_done" />
+
+    <Button
+        android:id="@+id/trashbt"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/returnbt"
+        android:background="@drawable/ic_action_delete" />
+
+</RelativeLayout>
