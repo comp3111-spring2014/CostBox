@@ -1,10 +1,15 @@
 package com.example.costbox.test;
 
+import android.content.pm.ActivityInfo;
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.view.View;
 
+import java.util.ArrayList;
+
+import com.example.costbox.preference.CategoryEdit;
 import com.example.costbox.CostBox;
 import com.example.costbox.CostDetail;
 import com.example.costbox.chartview.*;
@@ -30,110 +35,160 @@ public class CostBoxTest extends ActivityInstrumentationTestCase2<CostBox> {
 	protected void tearDown() throws Exception { 
 	//this method is called every time after any test execution 
 	// we want to clean the texts 
-	solo.finishOpenedActivities();
+		solo.finishOpenedActivities();
 	} 
 	
 	public void testView(){
 		assertNotNull(getActivity());
 	}
 	
-	public void test()
+	public float location_cast(int x)
 	{
-		solo.clickOnView(solo.getView(com.example.costbox.R.id.book_select));
-		solo.enterText(1, "100");
-		solo.clickOnView(solo.getView(com.example.costbox.R.id.add_button));
-		solo.clickOnView(solo.getView(com.example.costbox.R.id.book_select));
-		solo.enterText(1, "100");
-		solo.clickOnView(solo.getView(com.example.costbox.R.id.add_button));
-<<<<<<< HEAD
+		float result = (float)(x/1.5);
+		return result;
 	}
-	public void testFood()
+	
+	public void test() throws Exception
 	{
-=======
+		
+		View view=solo.getView(com.example.costbox.R.id.myListView);
+		int location[]=new int[2];
+		view.getLocationOnScreen(location);
+		solo.drag(location[0]+10,location[0]+10,location[1],location[1]+view.getHeight(),3);
+		// solo.enterText(1,"book");
+		solo.clickOnScreen(87, 241);
+		// solo.clickOnScreen(450, 1136);
+		solo.enterText(0, "9");
+		solo.clickOnScreen(584, 1138);
 
->>>>>>> 8f9a38c4cf919c228690a8a241c5ba4b9d3285a0
-		solo.clickOnView(solo.getView(com.example.costbox.R.id.food_select));
-		solo.enterText(1, "100");
-		solo.clickOnView(solo.getView(com.example.costbox.R.id.add_button));
-
-		solo.clickOnView(solo.getView(com.example.costbox.R.id.enter_select));
-		solo.enterText(1, "100");
-		solo.clickOnView(solo.getView(com.example.costbox.R.id.add_button));
-
-		solo.clickOnView(solo.getView(com.example.costbox.R.id.travel_select));
-		solo.enterText(1, "100");
-		solo.clickOnView(solo.getView(com.example.costbox.R.id.add_button));
-
-		solo.clickOnView(solo.getView(com.example.costbox.R.id.study_select));
-		solo.enterText(1, "100");
-		solo.clickOnView(solo.getView(com.example.costbox.R.id.add_button));
-<<<<<<< HEAD
-	}
-	
-	
-	public void testZSummary() throws Exception {
-		solo.setActivityOrientation(Solo.LANDSCAPE);
-		if(solo.waitForActivity(Summary.class)){
-			solo.clickOnView(solo.getView(com.example.costbox.R.id.piechart));
-			solo.clickOnView(solo.getView(com.example.costbox.R.id.doughnut));
-			solo.clickOnView(solo.getView(com.example.costbox.R.id.barchart));
-			solo.clickOnView(solo.getView(com.example.costbox.R.id.linechart));
-		}
-		solo.setActivityOrientation(Solo.PORTRAIT);
-	}
-	
-	
-	public void testDetail(){
-=======
-
->>>>>>> 8f9a38c4cf919c228690a8a241c5ba4b9d3285a0
-		solo.assertCurrentActivity("Wrong activity", CostBox.class);
-		solo.clickInList(0);     // select on the first item of the list view 
+		// the following is for details, the number above has been changed! 
+		
+		solo.clickInList(0); 
 		if(solo.waitForActivity(CostDetail.class)){
 			solo.assertCurrentActivity("Detail", CostDetail.class);
 			
-			TextView tmp = (TextView) solo.getView(com.example.costbox.R.id.comments);
-			solo.clickOnText("No comments...");
-			solo.enterText(0, "testing");
-			solo.clickOnButton("save");
-
-//			solo.typeText(com.example.costbox.R.id.comments, "test");
-
-			solo.clickLongOnView(solo.getView(com.example.costbox.R.id.detailimage));
+			// For the picture
+			solo.clickOnView(solo.getView(com.example.costbox.R.id.detailimage));
 			solo.goBack();
-			
-			solo.clickOnText("Book");
+			// For the category text
+			solo.clickOnText("food");
+			solo.enterText(0, "test");
 			solo.clickOnButton("save");
 			
-			solo.clickOnText("0");
-			solo.clickOnButton("save");
-			
+			solo.clickOnText("9.0");
+			solo.enterText(0, "100");
+			solo.clickOnButton("save");// save
+
+			solo.clickOnText("No comments...");
+			solo.enterText(0, "test");
 			solo.clickOnView(solo.getView(com.example.costbox.R.id.returnbt));
-			
-//			 solo.goBack(); //  Simulates pressing the hardware back key. Do nothing, finally just return;
+			// delete item
+			solo.clickInList(0);
+			solo.clickOnView(solo.getView(com.example.costbox.R.id.trashbt));
+			solo.clickOnButton("Yes");
 		}
 		
-			solo.clickInList(0);
-			if(solo.waitForActivity(CostDetail.class)){
-				solo.clickOnView(solo.getView(com.example.costbox.R.id.trashbt));
-				solo.clickOnButton("Yes");
-			}
+		//test_ScrollLayout
+		solo.drag(location[0]+10,location[0]+10,location[1],location[1]+view.getHeight(),3);
+		solo.drag(location[0]+300,location[0]+10,location[1]+10,location[1]+10,3);  // move to the right page
+		solo.clickOnScreen(location_cast(131), location_cast(362)); // click on the category
+		solo.clickOnScreen(location_cast(214), location_cast(1136)); // click the edittext to input some words for the coverage of keyboard
+		// solo.clickOnScreen(location_cast(92), location_cast(1377)); // input a word for the category
+		solo.enterText(1, "q");
+		solo.clickOnScreen(location_cast(876), location_cast(914)); // switch to the digit input place 
+		// solo.clickOnScreen(location_cast(670), location_cast(1707)); // input some thing
+		solo.enterText(0, "9");
+		solo.clickOnScreen(584, 1138); // click on OK for quit the current fragment.
 		
-		solo.clickLongInList(0);
+		solo.clickInList(0);
 		solo.goBack();
 		
-<<<<<<< HEAD
-=======
-		/*
-		solo.setActivityOrientation(Solo.LANDSCAPE);
-		if(solo.waitForActivity(Summary.class)){
-			solo.clickOnView(solo.getView(com.example.costbox.R.id.piechart));
-			solo.clickOnView(solo.getView(com.example.costbox.R.id.doughnut));
-			solo.clickOnView(solo.getView(com.example.costbox.R.id.barchart));
-			solo.clickOnView(solo.getView(com.example.costbox.R.id.linechart));
-		}
-		solo.setActivityOrientation(Solo.PORTRAIT);
-		*/
->>>>>>> 8f9a38c4cf919c228690a8a241c5ba4b9d3285a0
+		solo.clickLongInList(0);
+		solo.clickOnView(solo.getView(com.example.costbox.R.id.menu_delete));
+		
+		solo.drag(location[0]+10,location[0]+10,location[1],location[1]+view.getHeight(),3);
+		solo.goBack();
+
 	}
+	
+	public void testSlide() throws Exception
+	{
+		View view=solo.getView(com.example.costbox.R.id.myListView);
+		int location[]=new int[2];
+		view.getLocationOnScreen(location);
+		solo.drag(location[0]+300,location[0]+10,location[1]+200,location[1]+200,3);
+		solo.sleep(1000);
+		solo.drag(location[0]+10,location[0]+300,location[1]+200,location[1]+200,3);
+		solo.sleep(1000);
+		solo.drag(location[0]+10,location[0]+300,location[1]+200,location[1]+200,3);
+		solo.sleep(1000);
+		solo.drag(location[0]+300,location[0]+10,location[1]+200,location[1]+200,3);
+	}
+
+	public void testVPreference() throws Exception
+	{
+		// Preference
+		solo.clickOnView(solo.getView(com.example.costbox.R.id.file));
+		solo.sleep(1000);
+		solo.clickOnScreen(location_cast(749), location_cast(308));
+		solo.sleep(1000);
+		// using coordinates. 
+		solo.clickOnScreen(location_cast(551), location_cast(418)); 
+		if(solo.waitForActivity(CategoryEdit.class)) {
+			
+			 solo.assertCurrentActivity("Edit", CategoryEdit.class);
+			 solo.clickOnView(solo.getView(com.example.costbox.R.id.category_adding));
+			 solo.enterText(0, "test"); // create a new category for test 
+			 solo.clickOnButton("Yes");
+			 
+			 // solo.clickOnScreen(location_cast(603), location_cast(1105)); // click on the checkbox of new-added cate
+			 // solo.clickOnScreen(location_cast(603), location_cast(1105)); // bring it back to be visible.
+			 
+
+			 solo.clickLongOnScreen(450,816);
+			 solo.clickOnView(solo.getView(com.example.costbox.R.id.category_delete));
+			 solo.sleep(1000);
+			 
+			 solo.goBack();
+			 
+			 solo.clickOnScreen(location_cast(551), location_cast(418)); 	
+			 solo.goBack();
+			 
+			 solo.clickOnScreen(location_cast(199), location_cast(176));
+		}
+	}
+
+// 	public void testRotate() throws Exception
+// 	{
+// 		getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+// //		solo.setActivityOrientation(0);
+// //		solo.setActivityOrientation(0);
+// 		if(solo.waitForActivity(Summary.class)) {
+// 			solo.clickOnView(solo.getView(com.example.costbox.R.id.piechart));
+// 			solo.clickOnView(solo.getView(com.example.costbox.R.id.doughnut));
+// //			solo.clickOnView(solo.getView(com.example.costbox.R.id.linechart));
+// //			solo.clickOnButton("Yes");
+// //			
+// //			solo.clickOnView(solo.getView(com.example.costbox.R.id.start));
+// //			solo.clickOnButton("Set");
+// //
+// //			solo.clickOnView(solo.getView(com.example.costbox.R.id.end));
+// //			solo.clickOnButton("Set");
+// //
+// //			solo.clickOnView(solo.getView(com.example.costbox.R.id.quickchoice));
+// //			solo.clickOnButton("Yes");
+// //
+// 		}
+// 		solo.setActivityOrientation(1);
+// 		solo.setActivityOrientation(1);
+// //		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+// 		// if(solo.waitForActivity(CostBox.class)) {
+// 		// 	View view=solo.getView(com.example.costbox.R.id.myListView);
+// 		// 	int location[]=new int[2];
+// 		// 	view.getLocationOnScreen(location);
+// 		// 	solo.drag(location[0]+10,location[0]+10,location[1],location[1]+view.getHeight(),3);
+// 		// 	solo.goBack();
+// 		// }
+// 		// Log.v("aaa", "aaaa");
+// 	}
 }
