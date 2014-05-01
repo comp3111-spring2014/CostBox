@@ -37,7 +37,7 @@ public class CostBoxTest extends ActivityInstrumentationTestCase2<CostBox> {
 		assertNotNull(getActivity());
 	}
 	
-	public void testBook()
+	public void test()
 	{
 		solo.clickOnView(solo.getView(com.example.costbox.R.id.book_select));
 		solo.enterText(1, "100");
@@ -45,30 +45,29 @@ public class CostBoxTest extends ActivityInstrumentationTestCase2<CostBox> {
 		solo.clickOnView(solo.getView(com.example.costbox.R.id.book_select));
 		solo.enterText(1, "100");
 		solo.clickOnView(solo.getView(com.example.costbox.R.id.add_button));
+<<<<<<< HEAD
 	}
 	public void testFood()
 	{
+=======
+
+>>>>>>> 8f9a38c4cf919c228690a8a241c5ba4b9d3285a0
 		solo.clickOnView(solo.getView(com.example.costbox.R.id.food_select));
 		solo.enterText(1, "100");
 		solo.clickOnView(solo.getView(com.example.costbox.R.id.add_button));
-	}
-	public void testEnter()
-	{
+
 		solo.clickOnView(solo.getView(com.example.costbox.R.id.enter_select));
 		solo.enterText(1, "100");
 		solo.clickOnView(solo.getView(com.example.costbox.R.id.add_button));
-	}
-	public void testTravel()
-	{
+
 		solo.clickOnView(solo.getView(com.example.costbox.R.id.travel_select));
 		solo.enterText(1, "100");
 		solo.clickOnView(solo.getView(com.example.costbox.R.id.add_button));
-	}
-	public void testStudy()
-	{
+
 		solo.clickOnView(solo.getView(com.example.costbox.R.id.study_select));
 		solo.enterText(1, "100");
 		solo.clickOnView(solo.getView(com.example.costbox.R.id.add_button));
+<<<<<<< HEAD
 	}
 	
 	
@@ -85,6 +84,9 @@ public class CostBoxTest extends ActivityInstrumentationTestCase2<CostBox> {
 	
 	
 	public void testDetail(){
+=======
+
+>>>>>>> 8f9a38c4cf919c228690a8a241c5ba4b9d3285a0
 		solo.assertCurrentActivity("Wrong activity", CostBox.class);
 		solo.clickInList(0);     // select on the first item of the list view 
 		if(solo.waitForActivity(CostDetail.class)){
@@ -118,6 +120,20 @@ public class CostBoxTest extends ActivityInstrumentationTestCase2<CostBox> {
 			}
 		
 		solo.clickLongInList(0);
+		solo.goBack();
 		
+<<<<<<< HEAD
+=======
+		/*
+		solo.setActivityOrientation(Solo.LANDSCAPE);
+		if(solo.waitForActivity(Summary.class)){
+			solo.clickOnView(solo.getView(com.example.costbox.R.id.piechart));
+			solo.clickOnView(solo.getView(com.example.costbox.R.id.doughnut));
+			solo.clickOnView(solo.getView(com.example.costbox.R.id.barchart));
+			solo.clickOnView(solo.getView(com.example.costbox.R.id.linechart));
+		}
+		solo.setActivityOrientation(Solo.PORTRAIT);
+		*/
+>>>>>>> 8f9a38c4cf919c228690a8a241c5ba4b9d3285a0
 	}
 }
