@@ -11,11 +11,15 @@
   <item>003</item>
 </string-array>
 <string-array name="summary">
-  <item>Chart</item>
-  <item>Table</item>
+  <item>Today</item>
+  <item>Past 3 days</item>
+  <item>Past week</item>
+  <item>Past month</item>
 </string-array>
 <string-array name="summary_value">
   <item>004</item>
   <item>005</item>
+  <item>006</item>
+  <item>007</item>
 </string-array>
 </resources>

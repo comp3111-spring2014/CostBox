@@ -46,6 +46,22 @@
             android:inputType="text"
             android:text="2014-03-15"
             android:textColor="@drawable/huopo1" />
+        
+		<LinearLayout 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dim15" >
+            
+            <Button
+            android:id="@+id/quickchoice"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="@dimen/dim15"
+            android:background="@drawable/yellowbar"
+            android:text="Quick Choice"
+            android:textColor="@drawable/commentbg" />
+            
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -69,6 +85,7 @@
                 android:background="@drawable/sweetsweet" />
 
         </LinearLayout>
+        
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -82,14 +99,30 @@
                 android:layout_marginLeft="@dimen/dim15"
                 android:background="@drawable/linechart" />
 
-            <Button
+            <!-- <Button
                 android:id="@+id/barchart"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginLeft="@dimen/dim15"
-                android:background="@drawable/barchart" />
+                android:background="@drawable/barchart" /> -->
 
         </LinearLayout>
+        
+ <!--        
+        <LinearLayout 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            
+            <Button
+            android:id="@+id/monthchoice"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="@dimen/dim15"
+            android:background="@drawable/yellowbar"
+            android:text="Month Choice"
+            android:textColor="@drawable/commentbg" />
+            
+        </LinearLayout> -->
         
     </LinearLayout>
     
@@ -97,7 +130,7 @@
         android:id="@+id/chart"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@drawable/lightblue2"
+        android:background="@drawable/white"
         android:orientation="vertical" >
         
     </LinearLayout>

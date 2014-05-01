@@ -22,10 +22,10 @@
         android:title="Overflow Alert" />
       <ListPreference
         android:key="summary_view"
-        android:title="Summary View"
-        android:dialogTitle="Choose Summary View"
+        android:title="Default Pie Chart Period"
+        android:dialogTitle="Default Pie Chart Period"
         android:entries="@array/summary"
-        android:summary="To Choose a Summary View"
+        android:summary="To Choose a Pie Chart Period"
         android:entryValues="@array/summary_value">
      </ListPreference>  
  
@@ -35,13 +35,5 @@
         android:defaultValue="false"
         android:key="FB"
         android:title="FaceBook" />
-        <CheckBoxPreference
-        android:defaultValue="false"
-        android:key="TW"
-        android:title="Twitter" />
-        <CheckBoxPreference
-        android:defaultValue="false"
-        android:key="WC"
-        android:title="WeChat" />
 </PreferenceCategory>
 </PreferenceScreen>

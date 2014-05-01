@@ -1,120 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_linear"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_gravity="top"
-    android:background="@drawable/lightblue2"
     android:orientation="vertical" >
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:layout_height="fill_parent" >
+
+        <LinearLayout
+            android:id="@+id/buttomlayer"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/headerbg4"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="70dp"
+                android:background="@drawable/headerbg4"
+                android:gravity="left" >
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <LinearLayout
+                        android:layout_width="210dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/ribble" >
+
+                        <TextView
+                            android:id="@+id/todaydate"
+                            android:layout_width="150dp"
+                            android:layout_height="30dp"
+                            android:layout_marginBottom="30dp"
+                            android:layout_marginLeft="45dp"
+                            android:layout_marginTop="20dp"
+                            android:text="Today"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:textColor="@drawable/white"
+                            android:textSize="15sp" />
+
+                    </LinearLayout>
+
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/today_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="15dp"
+                    android:text="0"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@drawable/white"
+                    android:textSize="25sp" />
+
+            </LinearLayout>
+
+            <com.example.costbox.widget.pullToAddListView
+                android:id="@+id/myListView"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/itembg"
+                android:cacheColorHint="#A94F94CD"
+                android:divider="@drawable/alphe"
+                android:drawSelectorOnTop="true"
+                android:fadingEdge="horizontal|vertical"
+                android:fastScrollAlwaysVisible="false"
+                android:fastScrollEnabled="false"
+                android:footerDividersEnabled="false"
+                android:headerDividersEnabled="false"
+                android:smoothScrollbar="true" >
+
+            </com.example.costbox.widget.pullToAddListView>
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/lightblue2"
-            android:gravity="center_horizontal" >
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
 
-            <Button
-                android:id="@+id/book_select"
-                android:layout_width="65dp"
-                android:layout_height="65dp"
-                android:layout_gravity="center_horizontal|center"
-                android:background="@drawable/book" />
+            <RelativeLayout
+                android:id="@+id/container"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.40" >
 
-            <Button
-                android:id="@+id/enter_select"
-                android:layout_width="65dp"
-                android:layout_height="65dp"
-                android:layout_gravity="center_horizontal|center"
-                android:background="@drawable/enter1" />
+            </RelativeLayout>
 
-            <Button
-                android:id="@+id/food_select"
-                android:layout_width="65dp"
-                android:layout_height="65dp"
-                android:layout_gravity="center_horizontal|center"
-                android:background="@drawable/food1" />
+    <RelativeLayout
+        android:id="@+id/container2"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.41" >
 
-            <Button
-                android:id="@+id/travel_select"
-                android:layout_width="65dp"
-                android:layout_height="65dp"
-                android:layout_gravity="center_horizontal|center"
-                android:background="@drawable/travel1" />
-
-            <Button
-                android:id="@+id/study_select"
-                android:layout_width="65dp"
-                android:layout_height="65dp"
-                android:layout_gravity="center_horizontal|center"
-                android:background="@drawable/study1" />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="20dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/buttombg" >
         </LinearLayout>
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/greytran" >
+    </RelativeLayout>
+            
 
-        <EditText
-            android:id="@+id/myEditText"
-            android:layout_width="139dp"
-            android:layout_height="40dp"
-            android:layout_marginRight="@dimen/leftedit"
-            android:layout_marginTop="@dimen/leftedit"
-            android:layout_weight="0.59"
-            android:autoText="false"
-            android:background="@drawable/rouhe3"
-            android:ems="10"
-            android:hint="  Input Item"
-            android:singleLine="true"
-            android:textColor="@drawable/black" />
-
-        <EditText
-            android:id="@+id/myCost"
-            android:layout_width="65dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="@dimen/leftedit"
-            android:layout_marginTop="@dimen/leftedit"
-            android:layout_weight="0.75"
-            android:background="@drawable/rouhe3"
-            android:ems="10"
-            android:hint="  Cost"
-            android:inputType="numberDecimal" />
-
-        <Button
-            android:id="@+id/add_button"
-            android:layout_width="43dp"
-            android:layout_height="47dp"
-            android:layout_marginBottom="@dimen/leftedit"
-            android:layout_marginLeft="@dimen/dim15"
-            android:layout_marginTop="@dimen/leftedit"
-            android:background="@drawable/ic_action_done"
-            android:shadowColor="@android:color/darker_gray"
-            android:shadowDx="20"
-            android:shadowDy="20"
-            android:shadowRadius="20"
-            android:textStyle="bold|italic" />
-
-    </LinearLayout>
-
-    <ListView
-        android:id="@+id/myListView"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_gravity="top"
-        android:layout_marginBottom="@dimen/dim20"
-        android:background="@drawable/greybg"
-        android:divider="@drawable/greydivide"
-        android:dividerHeight="@dimen/dim010"
-        android:fadingEdge="horizontal|vertical"
-        android:fastScrollAlwaysVisible="false"
-        android:fastScrollEnabled="true" >
-
-    </ListView>
+        </LinearLayout>
+    </FrameLayout>
 
 </LinearLayout>

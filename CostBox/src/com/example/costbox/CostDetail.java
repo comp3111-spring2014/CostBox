@@ -2,6 +2,8 @@ package com.example.costbox;
 
 import java.io.File;
 
+import com.example.costbox.widget.RandomIDgenerator;
+
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -15,6 +17,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +26,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 @SuppressLint("NewApi")
 public class CostDetail extends Activity {
@@ -31,13 +36,15 @@ public class CostDetail extends Activity {
 	private Button returnbt1, trashbt1;
 	private TextView C1;
 	private TextView D1;
-	private TextView comments;
+	private EditText comments;
 	private ImageView detailimage;
+	private ImageView cateimage;
 	String ImageAddress;
 	String category;
 	String comment_text;
 	String cost;
 	String picture_address;
+	String cate_name;
 	@SuppressLint("NewApi")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -56,25 +63,30 @@ public class CostDetail extends Activity {
 		
 		C1 = (TextView) findViewById(R.id.Category);
 		D1 = (TextView) findViewById(R.id.detailcost);
-		comments = (TextView) findViewById(R.id.comments);
+		comments = (EditText) findViewById(R.id.comments);
 		returnbt1=(Button) findViewById(R.id.returnbt);
 		
 		trashbt1=(Button) findViewById(R.id.trashbt);
 		
 	    detailimage=(ImageView) findViewById(R.id.detailimage);
+	    cateimage=(ImageView) findViewById(R.id.cate_image);
 	    
 		intent=this.getIntent();
 		bunde=intent.getExtras();
 		
 		category=bunde.getString("category");
-		cost=bunde.getInt("cost")+"";
+		cost=bunde.getDouble("cost")+"";
 		comment_text=bunde.getString("comments");
 		picture_address=bunde.getString("picture");
+		cate_name=bunde.getString("catemark");
 		
 	    //show multiple information including the picture
 		C1.setText(category);
 	    D1.setText(cost);
 	    comments.setText(comment_text);
+	    int temp_id = getResources().getIdentifier(cate_name, "drawable", "com.example.costbox");
+		cateimage.setImageDrawable(getResources().getDrawable(temp_id));
+		
 	    if(picture_address.equals("None"))
 	    {
 	    	//using the default pic
@@ -114,9 +126,9 @@ public class CostDetail extends Activity {
 		
 		
 
-		detailimage.setOnLongClickListener(new ImageView.OnLongClickListener()
+		detailimage.setOnClickListener(new ImageView.OnClickListener()
 		{
-			public boolean onLongClick(View v)
+			public void onClick(View v)
 			{
 				new AlertDialog.Builder(CostDetail.this)
 				.setItems(new String[] {"From album","Take photos"}, 
@@ -130,14 +142,15 @@ public class CostDetail extends Activity {
 							 Intent i = new Intent(
 				             Intent.ACTION_PICK,
 				             android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                            startActivityForResult(i, 1);
+                             startActivityForResult(i, 1);
                             //overridePendingTransition(R.anim.in_from_button, R.anim.out_to_top);
 						}
 
 						else if(whichone==1)
 						{   File fos=null;
-
-						    String filename=category+cost+".jpg";// modified 4.3 
+						    RandomIDgenerator generate_id=new RandomIDgenerator();
+						    String filename_first=generate_id.getRandomID(); //generate a file name
+						    String filename=filename_first+".jpg";// combine a file name
 						    ImageAddress=Environment.getExternalStorageDirectory().getAbsolutePath()+File.separator+filename;
 						    fos=new File(ImageAddress);  
 						    Uri u=Uri.fromFile(fos);
@@ -149,7 +162,6 @@ public class CostDetail extends Activity {
 					}
 				})
 				.show();
-				return true;
 			}
 		});
 		
@@ -190,13 +202,13 @@ public class CostDetail extends Activity {
 							D1.setText(temp.getText());
 							//change string to int
 							String cost_string_temp = temp.getText().toString(); 
-							    int cost_temp=0;
+							    double cost_temp=0;
 							    try{
-							    cost_temp = Integer.parseInt(cost_string_temp);
+							    cost_temp = Double.parseDouble(cost_string_temp);
 							    }
 							    catch(NumberFormatException nfe){	
 							    }
-						 	bunde.putInt("cost", cost_temp);
+						 	bunde.putDouble("cost", cost_temp);
 						 	
 						}
 					}
@@ -208,11 +220,10 @@ public class CostDetail extends Activity {
 	    	   }
 	    	   });
 
-
-       comments.setOnClickListener(new TextView.OnClickListener() {
+	    /*
+       comments.setOnClickListener(new EditText.OnClickListener() {
     	   public void onClick(View v){
-    		   final EditText temp=new EditText(CostDetail.this);
-    		   temp.setText(comments.getText());
+    		   /*
     		   new AlertDialog.Builder(CostDetail.this)
     		   .setView(temp)
     		   .setPositiveButton("save", new DialogInterface.OnClickListener()
@@ -220,19 +231,41 @@ public class CostDetail extends Activity {
 					public void onClick(DialogInterface dialog,int which)
 					{
 						comments.setText(temp.getText());
-						bunde.putString("comments", temp.getText().toString());
+						
+			    bunde.putString("comments", comments.getText().toString());
+						
 					}
 				}
                )
     		   .setNegativeButton("cancel", null)
     		   .show();
+    		   
     		     
     		   
     	   }
     	   });
+       
+       	*/
+	       comments.addTextChangedListener(new TextWatcher(){
 
- 
+			@Override
+			public void afterTextChanged(Editable arg0) {
+				bunde.putString("comments", comments.getText().toString());
+			}
 
+			@Override
+			public void beforeTextChanged(CharSequence arg0, int arg1,
+					int arg2, int arg3) {
+				
+			}
+
+			@Override
+			public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+					int arg3) {
+				
+			}
+	    	   
+	       });
 	}
 	
 	@Override
@@ -248,15 +281,16 @@ public class CostDetail extends Activity {
 	    switch (item.getItemId()) {
 	        case android.R.id.home:
 	            // app icon in action bar clicked; go home
-	            Intent intent = new Intent(this, CostBox.class);
-	            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-	            startActivity(intent);
+				intent.putExtras(bunde);
+				CostDetail.this.setResult(999,intent);
+				CostDetail.this.finish();
 	            overridePendingTransition(R.anim.in_from_left,R.anim.out_to_right);
 	            return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
 	}
+	
 	protected void dialog() {
 		AlertDialog.Builder dg = new Builder(this);
 				dg.setMessage("Are you sure to delete?");
@@ -277,6 +311,7 @@ public class CostDetail extends Activity {
 				})
 				.show();
 	}	
+	
 	@Override 
 	public boolean onKeyDown(int keyCode, KeyEvent event){
 	//to judge whether it is the back key.
@@ -291,6 +326,7 @@ public class CostDetail extends Activity {
 		}
 		else return super.onKeyDown(keyCode, event);
 	}
+	
 	 @Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	        super.onActivityResult(requestCode, resultCode, data);
