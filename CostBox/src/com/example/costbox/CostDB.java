@@ -45,11 +45,11 @@ public class CostDB extends SQLiteOpenHelper
       + TABLE_NAME + " (" + FIELD_id +
       " INTEGER primary key autoincrement, "
       + " " + CATEGORY+" text, "+FIELD_TEXT +" text, "+COMM+" text, "+PIC_ADDR +" text, "+COST_MONEY+" text)";*/
-	  String sql = "CREATE TABLE " 
-		      + TABLE_NAME + " (" + FIELD_id +
-		      " INTEGER primary key autoincrement, " + DATE + " integer, "
-		      + " " + CATEGORY+" text, "+FIELD_TEXT +" text, "+COMM+" text, "+PIC_ADDR +" text, "
-		      +COST_MONEY+" REAL not null default '0.0', "+TIME+" text, "+TIME_TO_ORDER+" text)";   // then here the cost money attributes becomes integer type. 
+    String sql = "CREATE TABLE " 
+          + TABLE_NAME + " (" + FIELD_id +
+          " INTEGER primary key autoincrement, " + DATE + " integer, "
+          + " " + CATEGORY+" text, "+FIELD_TEXT +" text, "+COMM+" text, "+PIC_ADDR +" text, "
+          +COST_MONEY+" REAL not null default '0.0', "+TIME+" text, "+TIME_TO_ORDER+" text)";   // then here the cost money attributes becomes integer type. 
     db.execSQL(sql); 
     } 
   @Override
@@ -122,93 +122,93 @@ public class CostDB extends SQLiteOpenHelper
 
   public double sum_up(String Date)
   {
-	  SQLiteDatabase db = this.getReadableDatabase();
-	  String command = "SELECT SUM("+ COST_MONEY +") FROM " + TABLE_NAME+" WHERE "+DATE+"='"+Date+"'";
-	  Cursor cursor  = db.rawQuery(command,null);
-	  cursor.moveToFirst();  // to move the cursor to the top to access the sum. 
-	  String temp_result = cursor.getDouble(0) + "";  // I suppose it return the sum result, but I don't know the position of the _id 
-	  int index = temp_result.lastIndexOf("."); 
-	  if (index >= 0)
-	  	temp_result = temp_result.substring(0,index+2); 
-	  return Double.parseDouble( temp_result) ; 
+    SQLiteDatabase db = this.getReadableDatabase();
+    String command = "SELECT SUM("+ COST_MONEY +") FROM " + TABLE_NAME+" WHERE "+DATE+"='"+Date+"'";
+    Cursor cursor  = db.rawQuery(command,null);
+    cursor.moveToFirst();  // to move the cursor to the top to access the sum. 
+    String temp_result = cursor.getDouble(0) + "";  // I suppose it return the sum result, but I don't know the position of the _id 
+    int index = temp_result.lastIndexOf("."); 
+    if (index >= 0)
+      temp_result = temp_result.substring(0,index+2); 
+    return Double.parseDouble( temp_result) ; 
   }
  
   // This method is just for the testing
-  public double date_display(int start_date, int end_date)
-  {
-	  SQLiteDatabase db = this.getReadableDatabase(); 
-	  String command = "SELECT SUM("+ COST_MONEY +") FROM " + TABLE_NAME + " WHERE " +DATE + ">"+ start_date+" AND " +DATE +"<" + end_date ;  
-	  Cursor cursor = db.rawQuery(command, null); 
-	  cursor.moveToFirst();
-	  double answer = cursor.getDouble(0);
-	  cursor.close();
-	  return answer ; 
-  }
+//  public double date_display(int start_date, int end_date)
+//  {
+//    SQLiteDatabase db = this.getReadableDatabase(); 
+//    String command = "SELECT SUM("+ COST_MONEY +") FROM " + TABLE_NAME + " WHERE " +DATE + ">"+ start_date+" AND " +DATE +"<" + end_date ;  
+//    Cursor cursor = db.rawQuery(command, null); 
+//    cursor.moveToFirst();
+//    double answer = cursor.getDouble(0);
+//    cursor.close();
+//    return answer ; 
+//  }
   
   public int detect_existence(String cate_name)
   {
-	  SQLiteDatabase db = this.getReadableDatabase();
-	  String command = "SELECT *"+ " FROM " + TABLE_NAME + " WHERE " + CATEGORY + " = \"" +cate_name + "\"";
-	  Cursor cursor = db.rawQuery(command,null);
-	  cursor.moveToFirst();
-	  int count = cursor.getCount();
-		if(count > 0) return 1 ;
-		else return 2;
+    SQLiteDatabase db = this.getReadableDatabase();
+    String command = "SELECT *"+ " FROM " + TABLE_NAME + " WHERE " + CATEGORY + " = \"" +cate_name + "\"";
+    Cursor cursor = db.rawQuery(command,null);
+    cursor.moveToFirst();
+    int count = cursor.getCount();
+    if(count > 0) return 1 ;
+    else return 2;
 
   }
   
   public void delete_item(String cate_name)
   {
-	  SQLiteDatabase db = this.getReadableDatabase(); 
-	  db.delete(TABLE_NAME, "cost_category= \""+cate_name +"\"", null);
+    SQLiteDatabase db = this.getReadableDatabase(); 
+    db.delete(TABLE_NAME, "cost_category= \""+cate_name +"\"", null);
   }
   
   
   public Map<String, Double> sum_Of_catogory_Of_days(int start_date, int end_date)
   {
-	  Map<String,Double> cate_sum = new HashMap< String,Double >(200);
-	 
-	  SQLiteDatabase db = this.getReadableDatabase(); 
-	  String command = "SELECT " + CATEGORY + " , SUM("+ COST_MONEY + ") FROM " + TABLE_NAME + " WHERE "+DATE + " >= "+ start_date+" AND " +DATE +" <= " + end_date
-			  + " GROUP BY " + CATEGORY ;
-	  Cursor cursor = db.rawQuery(command, null);
-	  cursor.moveToFirst();
-	  
-	  while(!cursor.isAfterLast()) 
-	  {
-		  Double buffer; 
-		  buffer = Double.valueOf(cursor.getDouble(1));// the following line is not usable. This line recommended by Eclipse
-		  //buffer = new Integer(cursor.getInt(1));  // The incentive to introduce buffer is that, 
-		  										   // Java's Hashmap don't support original type(like int). So we need to 
-		  										   // Encapsulate what we got from the cursor as a int type to be Integer.
-		  cate_sum.put(cursor.getString(0), buffer);
-		  cursor.moveToNext();
-	  }
-	  
-	  return cate_sum; 
+    Map<String,Double> cate_sum = new HashMap< String,Double >(200);
+   
+    SQLiteDatabase db = this.getReadableDatabase(); 
+    String command = "SELECT " + CATEGORY + " , SUM("+ COST_MONEY + ") FROM " + TABLE_NAME + " WHERE "+DATE + " >= "+ start_date+" AND " +DATE +" <= " + end_date
+        + " GROUP BY " + CATEGORY ;
+    Cursor cursor = db.rawQuery(command, null);
+    cursor.moveToFirst();
+    
+    while(!cursor.isAfterLast()) 
+    {
+      Double buffer; 
+      buffer = Double.valueOf(cursor.getDouble(1));// the following line is not usable. This line recommended by Eclipse
+      //buffer = new Integer(cursor.getInt(1));  // The incentive to introduce buffer is that, 
+                             // Java's Hashmap don't support original type(like int). So we need to 
+                             // Encapsulate what we got from the cursor as a int type to be Integer.
+      cate_sum.put(cursor.getString(0), buffer);
+      cursor.moveToNext();
+    }
+    
+    return cate_sum; 
   } 
   
   
   public Map<Integer, Double> sum_up_Of_day(int date)
   {
-	  Map<Integer,Double> sum_of_a_day = new HashMap< Integer,Double >(200);
-	  
-	  SQLiteDatabase db = this.getReadableDatabase();
-	  String command = "SELECT SUM("+ COST_MONEY +") FROM " + TABLE_NAME  + " WHERE " +DATE + " = \"" + date + "\"" ;
-	  Cursor cursor  = db.rawQuery(command,null);
-	  cursor.moveToFirst();  // to move the cursor to the top to access the sum. 
-	  
-	  while(!cursor.isAfterLast()) 
-	  {
-		  Double buffer; 
-		  buffer = Double.valueOf(cursor.getDouble(1));// the following line is not usable. This line recommended by Eclipse
-		  //buffer = new Integer(cursor.getInt(1));  // The incentive to introduce buffer is that, 
-		  										   // Java's Hashmap don't support original type(like int). So we need to 
-		  										   // Encapsulate what we got from the cursor as a int type to be Integer.
-		  sum_of_a_day.put(date, buffer);
-		  cursor.moveToNext();
-	  }
-	  return sum_of_a_day;
+    Map<Integer,Double> sum_of_a_day = new HashMap< Integer,Double >(200);
+    
+    SQLiteDatabase db = this.getReadableDatabase();
+    String command = "SELECT SUM("+ COST_MONEY +") FROM " + TABLE_NAME  + " WHERE " +DATE + " = \"" + date + "\"" ;
+    Cursor cursor  = db.rawQuery(command,null);
+    cursor.moveToFirst();  // to move the cursor to the top to access the sum. 
+    
+    while(!cursor.isAfterLast()) 
+    {
+      Double buffer; 
+      buffer = Double.valueOf(cursor.getDouble(1));// the following line is not usable. This line recommended by Eclipse
+      //buffer = new Integer(cursor.getInt(1));  // The incentive to introduce buffer is that, 
+                             // Java's Hashmap don't support original type(like int). So we need to 
+                             // Encapsulate what we got from the cursor as a int type to be Integer.
+      sum_of_a_day.put(date, buffer);
+      cursor.moveToNext();
+    }
+    return sum_of_a_day;
   }
   
   public Map<Integer, Double> sum_up_Of_days(int start_date, int end_date )
@@ -217,7 +217,7 @@ public class CostDB extends SQLiteOpenHelper
     
     SQLiteDatabase db = this.getReadableDatabase();
     String command = "SELECT " + DATE + " , SUM("+ COST_MONEY + ") FROM " + TABLE_NAME + " WHERE "+DATE + " >= "+ start_date+" AND " 
-    		+DATE +" <= " + end_date + " GROUP BY " + DATE ;
+        +DATE +" <= " + end_date + " GROUP BY " + DATE ;
     
     Cursor cursor = db.rawQuery(command, null);
     cursor.moveToFirst();
