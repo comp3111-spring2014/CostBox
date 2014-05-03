@@ -63,4 +63,26 @@ public class CostBoxTest2 extends ActivityInstrumentationTestCase2<CostBox>{
 		solo.clickOnButton("OK");
 		
 	}
+	
+	public void testRotate() throws Exception
+	{
+		solo.setActivityOrientation(0);
+		solo.sleep(1000);
+		solo.clickOnView(solo.getView(com.example.costbox.R.id.piechart));
+		solo.clickOnView(solo.getView(com.example.costbox.R.id.doughnut));
+		solo.clickOnView(solo.getView(com.example.costbox.R.id.linechart));
+		solo.clickOnButton("Yes");
+		
+		solo.clickOnView(solo.getView(com.example.costbox.R.id.start));
+		solo.clickOnButton("Cancel");
+
+		solo.clickOnView(solo.getView(com.example.costbox.R.id.end));
+		solo.clickOnButton("Cancel");
+
+		solo.clickOnView(solo.getView(com.example.costbox.R.id.quickchoice));
+		solo.clickOnButton("Yes");
+
+		solo.setActivityOrientation(1);
+		solo.sleep(1000);
+	}
 }

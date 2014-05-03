@@ -3,12 +3,10 @@
     package="com.example.costbox"
     android:versionCode="1"
     android:versionName="1.0" >
-    
-    <supports-screens android:anyDensity="true" />
 
     <uses-sdk
         android:minSdkVersion="11"
-        android:targetSdkVersion="19" />
+        android:targetSdkVersion="18" />
     <uses-permission android:name="android.permission.INTERNET"/>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -16,6 +14,7 @@
         android:allowBackup="true"
         android:icon="@drawable/piggy"
         android:label="@string/CostBox"
+        android:launchMode="singleInstance"
         android:theme="@style/AppBaseTheme" android:logo="@drawable/piggy">
         <activity
             android:name="com.example.costbox.facebook.FirstStartCostBox"
@@ -33,18 +32,8 @@
         <activity android:name="com.example.costbox.CostBox" 
                   android:logo="@drawable/piggy" 
                   android:icon="@drawable/piggy"
-                  android:configChanges="orientation|screenSize|keyboardHidden"
                   android:label="CostBox"> 
         </activity>
-         <activity 
-            android:name="com.example.costbox.chartview.Summary"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-            android:logo="@drawable/piggy" 
-            android:icon="@drawable/piggy" 
-            android:label="Chart"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-           >
-          </activity>
 
         
         <activity android:name="CostDetail" 

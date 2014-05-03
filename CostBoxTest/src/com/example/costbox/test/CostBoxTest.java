@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import com.example.costbox.preference.CategoryEdit;
 import com.example.costbox.CostBox;
 import com.example.costbox.CostDetail;
-import com.example.costbox.chartview.*;
 import com.robotium.solo.Solo;
 
 public class CostBoxTest extends ActivityInstrumentationTestCase2<CostBox> {

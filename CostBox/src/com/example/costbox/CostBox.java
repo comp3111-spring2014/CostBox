@@ -9,7 +9,42 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
+import org.achartengine.ChartFactory;
+import org.achartengine.GraphicalView;
+import org.achartengine.chart.BarChart.Type;
+import org.achartengine.chart.PointStyle;
+import org.achartengine.model.CategorySeries;
+import org.achartengine.model.MultipleCategorySeries;
+import org.achartengine.model.SeriesSelection;
+import org.achartengine.model.XYMultipleSeriesDataset;
+import org.achartengine.model.XYSeries;
+import org.achartengine.renderer.DefaultRenderer;
+import org.achartengine.renderer.SimpleSeriesRenderer;
+import org.achartengine.renderer.XYMultipleSeriesRenderer;
+import org.achartengine.renderer.XYSeriesRenderer;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources.Theme;
+import android.graphics.Color;
+import android.graphics.Paint.Align;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -40,9 +75,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
+import android.view.View.OnClickListener;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.view.inputmethod.InputMethodManager;
@@ -53,6 +90,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.DatePicker;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -95,16 +133,104 @@ implements CategoryFragment.OnReturnListener,
   //flip variable
   private float oldTouchValue;//text the position of finger
   //Check if touch event should be interrupted
-  Boolean is_adding=false;
+  Boolean is_adding;
   //adapter of listview and database
   SimpleCursorAdapter adapter;
-  
+  /*
+   * the following is about the cartview
+   */
+  final String[] quickChoice = new String[]{"Today","Past 3 Days","Past Week","Past Month"};
+	final String[] monthChoice = new String[]{"Janary", "February", "March", "April", 
+			"May", "June", "July", "August", "September", "October", "November", "December"};
+	private int choice = 0;
+	private int day_diff = 0;
+	private String start_date = new String();
+	private String end_date = new String();
+	private String today_date2 = new String();
+	private String line_start = new String();
+	private String line_end = new String();
+	private int today_year, today_monthOfYear, today_dayOfMonth;
+	private int start_year, start_monthOfYear, start_dayOfMonth;
+	private int end_year, end_monthOfYear, end_dayOfMonth;
+	
+  //initialization of pie and dou	
+	String[] categories;
+	double[] values;
+	final int[] COLORS = new int[] {0xFFECD078,0xFFD95B43,0xFFC02942,0xFF542437,0xFF53777A};
+	
+
+	//initialization of line
+	String[] titles = new String[] {"Daily Cost"};
+	List<double[]> xvalue = new ArrayList<double[]>();
+	List<double[]> yvalue = new ArrayList<double[]>();
+	
+	public void getPieValue(String startdate,  String enddate){
+		int start = Integer.parseInt(startdate);
+		int end = Integer.parseInt(enddate);
+		Map<String, Double> result = new HashMap<String, Double>(200);
+		result = CostBox.myCostDB.sum_Of_catogory_Of_days(start, end);
+		
+		categories = new String[result.size()];
+		values = new double[result.size()];
+		
+		Iterator iter = result.entrySet().iterator();
+		int temp = 0;
+		while(iter.hasNext())
+		{
+			Map.Entry entry =(Map.Entry)iter.next();
+			categories[temp] = (String) entry.getKey();
+			values[temp] = (Double) Double.parseDouble(entry.getValue().toString());
+			temp++;
+		}
+	}
+	
+	public void getLineValue(String startdate,  String enddate){
+		int start = Integer.parseInt(startdate);
+		int end = Integer.parseInt(enddate);
+		Map<Integer, Double> result = new HashMap<Integer, Double>(200);
+		result = CostBox.myCostDB.sum_up_Of_days(start, end);
+		
+		Object[] key =  result.keySet().toArray();    
+		Arrays.sort(key);
+		
+		double x_tmp[] = new double[result.size()];
+		double y_tmp[] = new double[result.size()];
+
+		int temp = 0;
+		for(int i = 0; i<key.length; i++){
+			x_tmp[temp] = (Double) Double.parseDouble(key[i].toString()) % 100;
+			y_tmp[temp] = (Double) Double.parseDouble(result.get(key[i]).toString());
+			temp++;
+		}
+		for(int i=0;i<x_tmp.length;i++)
+			Log.v("aaa", "aaa "+ x_tmp[i] + " aaa " + y_tmp[i]);
+		
+		xvalue.clear();
+		yvalue.clear();
+		xvalue.add(x_tmp);
+		yvalue.add(y_tmp);
+	}
+	PointStyle[] styles = new PointStyle[] { PointStyle.DIAMOND};
+	int[] colors = new int[] { Color.BLUE };
+	
+	// others
+	private TextView startDate, endDate;
+	
+	private Button startchoose, endchoose, piechart, doughnutchart, linechart, quickchoice, monthchoice;
+	private GraphicalView myChartView;
+	
   /** Called when the activity is first created. */ 
+	
   @Override 
   public void onCreate(Bundle savedInstanceState) 
   { 
-    super.onCreate(savedInstanceState); 
+    
+   
+    if(this.getResources().getConfiguration().orientation==Configuration.ORIENTATION_PORTRAIT)
+    { 
+   super.onCreate(savedInstanceState); 
     setContentView(R.layout.main);
+    is_adding=false;
     select_date=Date_int_transfer();
 
     //load all the fragments
@@ -113,16 +239,21 @@ implements CategoryFragment.OnReturnListener,
         fbShareFragment = new FBShareFragment();
         getSupportFragmentManager().beginTransaction().add(fbShareFragment, "FBS")
         .commit();
+        /*
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();  
+		ft.add(R.id.container, category_list_fragment);
+		ft.add(R.id.container2, inputKey_fragment);
+		ft.addToBackStack(null); 
+		ft.commit();
+		*/
     } else {
         fbShareFragment = (FBShareFragment) getSupportFragmentManager()
         .findFragmentByTag("FBS");
     }
-    //get the fragments of category and inputkey
+    
+    
     category_list_fragment = new CategoryFragment();
     inputKey_fragment = new InputKeyFragment();
-    
-    
-    
     //load the listview
     myListView = (pullToAddListView) this.findViewById(R.id.myListView); 
     //init refresh of list
@@ -145,9 +276,9 @@ implements CategoryFragment.OnReturnListener,
 			ft.add(R.id.container, category_list_fragment);
 			ft.setCustomAnimations(R.anim.fragment_move_in, R.anim.fragment_move_out);
 			ft.add(R.id.container2, inputKey_fragment);
-			ft.addToBackStack(null); 
+			//ft.addToBackStack(null); 
 			ft.commit();
-		}
+		} 
 
 		private void lockButtomLayer() {
 			View currentLayout=(View)findViewById(R.id.myListView);
@@ -221,12 +352,253 @@ implements CategoryFragment.OnReturnListener,
     today_total=(TextView)findViewById(R.id.today_total);
     today_date.setText(Date_format_transfer(select_date));
     today_total.setText(SumUp());
-    
+    }
+    else if((this.getResources().getConfiguration().orientation==Configuration.ORIENTATION_LANDSCAPE))
+    {     
+    	super.onCreate(savedInstanceState); 
+    	this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 
+        WindowManager.LayoutParams.FLAG_FULLSCREEN); 
+    	setContentView(R.layout.summary_layout);
+        is_adding=true;
+		
+		// 将日期选择的 end 定位到今天，start 根据 Preference 来做
+		startDate = (TextView) findViewById(R.id.startdate);
+		endDate = (TextView) findViewById(R.id.enddate);
+		
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this); 
+		String source = settings.getString("summary_view", "");  
+		if(source.equals("004")) day_diff = 0;
+		else if(source.equals("005")) day_diff = -2;
+		else if(source.equals("006")) day_diff = -6;
+		else if(source.equals("007")) day_diff = -29;
+		
+		
+		Calendar calendar = Calendar.getInstance();		
+		today_year = calendar.get(Calendar.YEAR);
+		today_monthOfYear = calendar.get(Calendar.MONTH);
+		today_dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+		int today_month = today_monthOfYear + 1;
+	    String today_formattedMonth = "" + today_month;
+	    String today_formattedDayOfMonth = "" + today_dayOfMonth;
+	    if(today_month < 10) today_formattedMonth = "0" + today_month;
+	    if(today_dayOfMonth < 10) today_formattedDayOfMonth = "0" + today_dayOfMonth;
+		today_date2 = "" + today_year + today_formattedMonth + today_formattedDayOfMonth;
+
+		start_date = com.example.costbox.CostBox.getDateStr(today_date2, day_diff);
+		start_year = Integer.parseInt(start_date.substring(0,4));
+		start_monthOfYear = Integer.parseInt(start_date.substring(4,6))-1;
+		start_dayOfMonth = Integer.parseInt(start_date.substring(6));
+		startDate.setText(start_date.substring(0,4) + "-" +start_date.substring(4,6) + "-" + start_date.substring(6));
+		
+		end_date = com.example.costbox.CostBox.getDateStr(today_date2, 0);
+		end_year = Integer.parseInt(end_date.substring(0,4));
+		end_monthOfYear = Integer.parseInt(end_date.substring(4,6))-1;
+		end_dayOfMonth = Integer.parseInt(end_date.substring(6));
+		endDate.setText(end_date.substring(0,4) + "-" +end_date.substring(4,6) + "-" + end_date.substring(6));
+		
+		getPieValue(start_date,end_date);
+		showPieChart(categories, values);
+		
+		// Click the start date button, and choose the date, then update the pie chart
+		startchoose = (Button) findViewById(R.id.start);
+		startchoose.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				DatePickerDialog datePickerDialog = new DatePickerDialog(CostBox.this, DatePickerDialog.THEME_HOLO_LIGHT, new DatePickerDialog.OnDateSetListener() {
+					
+					@Override
+					public void onDateSet(DatePicker view, int year, int monthOfYear,
+							int dayOfMonth) {
+						start_year = year; start_monthOfYear = monthOfYear; start_dayOfMonth = dayOfMonth;
+						int start_month = monthOfYear + 1;
+					    String start_formattedMonth = "" + start_month;
+					    String start_formattedDayOfMonth = "" + dayOfMonth;
+					    if(start_month < 10) start_formattedMonth = "0" + start_month;
+					    if(dayOfMonth < 10) start_formattedDayOfMonth = "0" + dayOfMonth;
+					    
+					    startDate.setText( year + "-" + start_formattedMonth + "-" + start_formattedDayOfMonth);
+					    start_date = "" + year + start_formattedMonth + start_formattedDayOfMonth;
+						
+						getPieValue(start_date, end_date);
+						showPieChart(categories, values);
+						
+					}
+				} , start_year, start_monthOfYear, start_dayOfMonth);
+				
+				datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						if (which == DialogInterface.BUTTON_NEGATIVE){
+							
+						}
+					}
+				});
+				
+				datePickerDialog.show();
+			}
+			
+		});
+		
+		// Click the end date button, and choose the date, then update the pie chart
+		endchoose = (Button) findViewById(R.id.end);
+		endchoose.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				DatePickerDialog datePickerDialog = new DatePickerDialog(CostBox.this, DatePickerDialog.THEME_HOLO_LIGHT, new DatePickerDialog.OnDateSetListener() {
+					
+					@Override
+					public void onDateSet(DatePicker view, int year, int monthOfYear,
+							int dayOfMonth) {
+						end_year = year; end_monthOfYear = monthOfYear; end_dayOfMonth = dayOfMonth;
+						int end_month = monthOfYear + 1;
+					    String end_formattedMonth = "" + end_month;
+					    String end_formattedDayOfMonth = "" + dayOfMonth;
+					    if(end_month < 10) end_formattedMonth = "0" + end_month;
+					    if(dayOfMonth < 10) end_formattedDayOfMonth = "0" + dayOfMonth;
+					    
+						endDate.setText( year + "-" + end_formattedMonth + "-" + end_formattedDayOfMonth);
+						end_date = "" + year + end_formattedMonth + end_formattedDayOfMonth;
+						
+						getPieValue(start_date, end_date);
+						showPieChart(categories, values);
+						
+					}
+				}, end_year, end_monthOfYear, end_dayOfMonth);
+				
+				datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						if (which == DialogInterface.BUTTON_NEGATIVE){
+							
+						}
+					}
+				});
+				
+				datePickerDialog.show();
+			}
+		});
+		
+		
+		piechart = (Button) findViewById(R.id.piechart);
+		piechart.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				showPieChart(categories, values);
+			}
+		});
+		
+		doughnutchart = (Button) findViewById(R.id.doughnut);
+		doughnutchart.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				showDoughnutChart(categories, values);
+				
+			}
+		});
+		
+		// Click the quick choice button, and get the corresponding start date and end date, then update the chart
+		quickchoice = (Button) findViewById(R.id.quickchoice);
+		quickchoice.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				AlertDialog.Builder quick_choice = new AlertDialog.Builder(CostBox.this, AlertDialog.THEME_HOLO_LIGHT);
+				quick_choice.setTitle("Quick Choice for Pie Chart");
+				quick_choice.setSingleChoiceItems(quickChoice, choice, new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						choice = which;
+					}
+				});
+				quick_choice.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							Log.v("hhh","hhh123" + quickChoice[choice]);
+							// 这里需要添加和之前类似的代码，重新 getPieValue
+							if(choice == 0) day_diff = 0;
+							else if(choice == 1) day_diff = -2;
+							else if(choice == 2) day_diff = -6;
+							else if(choice == 3) day_diff = -29;
+							start_date = com.example.costbox.CostBox.getDateStr(today_date2, day_diff);
+							startDate.setText(start_date.substring(0,4) + "-" +start_date.substring(4,6) + "-" + start_date.substring(6));
+							end_date = com.example.costbox.CostBox.getDateStr(today_date2, 0);
+							endDate.setText(end_date.substring(0,4) + "-" +end_date.substring(4,6) + "-" + end_date.substring(6));
+							getPieValue(start_date, end_date);
+							showPieChart(categories, values);
+						}
+					});
+				quick_choice.setNegativeButton("Cancel", null);
+				quick_choice.show();
+			}
+		});
+		
+		// Click the line button, choose the month, and display the line chart of daily cost of corresponding month
+		linechart = (Button) findViewById(R.id.linechart);
+		linechart.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				AlertDialog.Builder month_choice = new AlertDialog.Builder(CostBox.this, AlertDialog.THEME_HOLO_LIGHT);
+				month_choice.setTitle("Choose Month");
+				month_choice.setSingleChoiceItems(monthChoice, choice, new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						choice = which;						
+					}
+				});
+				month_choice.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						int month = choice + 1;
+					    String formattedMonth = "" + month;
+					    if(month < 10) formattedMonth = "0" + month;
+					    line_start = "2014" + formattedMonth + "01";
+						line_end = "2014" + formattedMonth + "31";
+						
+						getLineValue(line_start, line_end);
+						showLineChart(titles,xvalue, yvalue);
+					}
+				});
+				month_choice.setNegativeButton("Cancel", null);
+				month_choice.show();
+			}
+		});
+
+    }
   }
   
-   private void configure_database(String Date) {
+   @Override
+protected void onSaveInstanceState(Bundle outState) {
+	// TODO Auto-generated method stub
+	super.onSaveInstanceState(outState);
+}
+
+@Override
+protected void onDestroy() {
+	// TODO Auto-generated method stub
+	super.onDestroy();
+}
+
+@Override
+protected void onPause() {
+	// TODO Auto-generated method stub
+	super.onPause();
+}
+
+private void configure_database(String Date) {
 	myCostDB = new CostDB(this); 
-    myCursor = myCostDB.select(Date);
+    myCursor = myCostDB.select(Date); 
     SimpleCursorAdapter.ViewBinder viewBinder = new SimpleCursorAdapter.ViewBinder() {
     	  @SuppressLint("NewApi")
 		@Override
@@ -272,22 +644,7 @@ implements CategoryFragment.OnReturnListener,
 				mode.finish(); 
 				return true;
 
-			case R.id.menu_edit:
-
-				Intent intent=new Intent();
-		        intent.setClass(CostBox.this, CostDetail.class);
-		        Bundle bundle = new Bundle();
-		        bundle.putString("category",myCursor.getString(3));
-		        bundle.putString("comments",myCursor.getString(4));
-		        bundle.putDouble("cost",myCursor.getDouble(6));
-		        bundle.putString("picture", myCursor.getString(5));
-		        bundle.putInt("date",myCursor.getInt(1));
-		        bundle.putString("back_Identifier","false" ); 
-		        intent.putExtras(bundle);
-		        startActivityForResult(intent,0);
-		        overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-				mode.finish();
-				return true;
+			
 			case R.id.menu_share:
                 if(isNetworkConnected(CostBox.this)==false)
                 {
@@ -455,26 +812,15 @@ implements CategoryFragment.OnReturnListener,
 	}
 	return super.onOptionsItemSelected(item);
 }
-  
-  //orientation change function
-public void onConfigurationChanged(Configuration newConfig){
-		super.onConfigurationChanged(newConfig);
-		if(this.getResources().getConfiguration().orientation 
-				== Configuration.ORIENTATION_LANDSCAPE){
-			//setContentView(R.layout.summary);
-			//setContentView(R.layout.transist);
-			Intent intent = new Intent();
-			intent.setClass(CostBox.this,com.example.costbox.chartview.Summary.class);
-			startActivityForResult(intent,1);
-			overridePendingTransition(R.anim.fadein, R.anim.fadeout);
-			//this.finish();
-			
-		} else if(this.getResources().getConfiguration().orientation 
-				== Configuration.ORIENTATION_PORTRAIT){
-			//Toast.makeText(getApplicationContext(), "PORTRAIT", Toast.LENGTH_SHORT).show();
-		}
-		
-	}
+
+
+@Override
+protected void onStop() {
+	// TODO Auto-generated method stub
+	super.onStop();
+
+}
+
 @Override
 protected void onActivityResult(int requestCode, int resultCode, Intent data) 
 {
@@ -493,7 +839,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data)
 		String adding_order_temp=bunde.getString("addingorder");
 		double Cost= bunde.getDouble("cost");
 		String Pic_Addr=bunde.getString("picture");
-		int date=Date_int_transfer();
+		int date=bunde.getInt("date");
 		myCostDB.update(_id,catemark,category,Cost,comments,Pic_Addr,date,adding_time_temp,adding_order_temp);
 		
 		    myCursor.requery(); 
@@ -820,14 +1166,15 @@ public void AddListViewAnimation() {
 public boolean onKeyDown(int keyCode, KeyEvent event) {
 	  
     if (keyCode == KeyEvent.KEYCODE_BACK
-              && event.getRepeatCount() == 0) {
+              && event.getRepeatCount() == 0 && this.getResources().getConfiguration().orientation==Configuration.ORIENTATION_PORTRAIT) {
     	      
     	        InputKeyFragment inputkey_fragment=(InputKeyFragment)
                 getSupportFragmentManager().findFragmentById(R.id.container2);
                 CategoryFragment category_fragment=(CategoryFragment)
                 getSupportFragmentManager().findFragmentById(R.id.container);
                 if(category_fragment!=null&&inputkey_fragment!=null)
-                {category_fragment.Money_total.setText("");
+                {
+                category_fragment.Money_total.setText("");
        		    inputkey_fragment.editTT.setText("");
     		    //return to clickable interface
     			 View currentLayout=(View)findViewById(R.id.myListView);
@@ -839,11 +1186,26 @@ public boolean onKeyDown(int keyCode, KeyEvent event) {
     			       } 
     			 });
     			 RemoveFragmentFromActivity();
+    			 is_adding=false;
                 }
+                Log.d("button","This is return1");
           return true;
       }
-      return super.onKeyDown(keyCode, event);
-  }
+    else if(keyCode == KeyEvent.KEYCODE_BACK
+            && event.getRepeatCount() == 0 && this.getResources().getConfiguration().orientation==Configuration.ORIENTATION_LANDSCAPE)
+    {
+    	//do nothing
+    	Log.d("button","This is return");
+        return true;
+    }
+    else 
+    {
+    	//do nothing
+    }
+    Log.d("button","This is return2");
+      //return super.onKeyDown(keyCode, event);
+     return true;
+}
 
 
 
@@ -1026,18 +1388,22 @@ public void ReturnClickableOfButtomLayer() {
 	        // TODO Auto-generated method stub
 	        return false;
 	       } 
-	 });
+	 }); 
 }
 /*
  * used to remove two fragments from the main view
  */
 public void RemoveFragmentFromActivity() {
+	InputKeyFragment inputkey_fragment=(InputKeyFragment)
+	         getSupportFragmentManager().findFragmentById(R.id.container2);
+		 CategoryFragment category_fragment=(CategoryFragment)
+	         getSupportFragmentManager().findFragmentById(R.id.container);
 	FragmentTransaction ft2 = getSupportFragmentManager().beginTransaction();
 	 ft2.setCustomAnimations(R.anim.fragment_move_in2, R.anim.fragment_move_out2);
-	 ft2.remove(category_list_fragment);
+	 ft2.remove(category_fragment);
 	 ft2.setCustomAnimations(R.anim.fragment_move_in, R.anim.fragment_move_out);
-	 ft2.remove(inputKey_fragment); 
-	 ft2.addToBackStack(null); 
+	 ft2.remove(inputkey_fragment); 
+	 //ft2.addToBackStack(null); 
 	 ft2.commit();
 }
 /*
@@ -1083,45 +1449,258 @@ private void sleepfor1s() {
 		try {  Thread.sleep(200);   } 
 		catch (InterruptedException e) {  e.printStackTrace();  }
 	}
-  
 /*
-  private void test_cate()
-  {
-	  String temps = myCostDB.date_display(20130201,20140530)+"";  // the date_int required other data. Like 2014-April-1st, it becomes 20140301									// You can use Date_int_tranfer function to achive it. 
-	  Toast.makeText(this, temps, Toast.LENGTH_SHORT).show();
-  }
-   */
-/*The following part is to test the category sum function. 
-* for traversing the map, the reference : http://ludaojuan21.iteye.com/blog/243475  
-*http://blog.csdn.net/wzb56_earl/article/details/7864911  
-*/
-/*
-private void SumOfCategory()
-  {
+ * the following is about chartview
+ */
+
+public void showPieChart(String[] categoryString, double[] valueDouble){
+	LinearLayout layout = (LinearLayout) findViewById(R.id.chart);
+	layout.removeAllViews();
 	
-	  Map<String,Integer> result = new HashMap<String,Integer>(200);
-	  
-	  
-	  Integer t1,t2; 
-	  t1 = Integer.valueOf(1);
-	  t2 = Integer.valueOf(2);
-	  result.put("first", t1);
-	  result.put("second",t2);
-	  
-	  
-	  Map<String,Integer> result = new HashMap<String,Integer>(200);
-	  result = myCostDB.sum_of_catogory();
-	  
-	  Iterator iter = result.entrySet().iterator();
-	  String temps ="";
-	  while(iter.hasNext())
-	  {
-		  Map.Entry entry =(Map.Entry)iter.next();
-		  temps = temps + "key: "+ entry.getKey() +"\n";
-		  temps = temps + "value:" + entry.getValue() + "\n" ; 
-	  }
-	  
-	  Toast.makeText(this, temps, Toast.LENGTH_LONG).show();
-  }
-*/
+	
+	final CategorySeries mySeries = buildCategoryDataset("", categoryString, valueDouble);
+	
+	int[] colorTmp = new int[categoryString.length];
+	for(int i=0;i<categoryString.length;i++){
+		colorTmp[i] = COLORS[i%5];
+	}
+	final DefaultRenderer myRenderer = buildCategoryRenderer(colorTmp);
+	
+	myRenderer.setChartTitle("Category Sum of Cost from " + start_date.substring(0,4) + "-" 
+			+ start_date.substring(4,6) + "-" + start_date.substring(6) + " to " 
+			+ end_date.substring(0,4) + "-" + end_date.substring(4,6) + "-" + end_date.substring(6));
+	myRenderer.setChartTitleTextSize(50);
+	myRenderer.setLabelsTextSize(30);
+	myRenderer.setLegendTextSize(30);
+	myRenderer.setLabelsColor(Color.BLACK);
+	myRenderer.setZoomEnabled(false);
+	myRenderer.setShowLabels(true);
+	myRenderer.setDisplayValues(true);
+	myRenderer.setPanEnabled(false);
+	myRenderer.setShowLegend(true);
+	
+	myChartView = ChartFactory.getPieChartView(this, mySeries, myRenderer);
+	myChartView.repaint();
+	layout.addView(myChartView);
+	
+	myRenderer.setClickEnabled(true);
+	myChartView.setOnClickListener(new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			SeriesSelection mySeriesSelection = myChartView.getCurrentSeriesAndPoint();
+			if (mySeriesSelection == null) {
+				Toast.makeText(CostBox.this, "No item is selected", Toast.LENGTH_SHORT).show();
+			} else {
+				for (int i=0;i<mySeries.getItemCount();i++){
+					myRenderer.getSeriesRendererAt(i).setHighlighted(i == mySeriesSelection.getPointIndex());
+				}
+				myChartView.repaint();
+				Toast.makeText(CostBox.this, "The cost of " 
+						+ mySeries.getCategory(mySeriesSelection.getPointIndex()) 
+						+ " is " + mySeriesSelection.getValue() + ".", Toast.LENGTH_SHORT).show();;
+			}
+		}
+	});
 }
+
+public void showDoughnutChart(String[] category, double[] value){
+	LinearLayout layout = (LinearLayout) findViewById(R.id.chart);
+	layout.removeAllViews();
+	
+	List<String[]> categories = new ArrayList<String[]>();
+	List<double[]> values = new ArrayList<double[]>();
+	categories.add(category);
+	values.add(value);
+	
+	final MultipleCategorySeries mySeries = buildMultipleCategoryDataset("", categories, values);
+	
+	int[] colorTmp = new int[category.length];
+	for(int i=0;i<category.length;i++){
+		colorTmp[i] = COLORS[i%5];
+	}
+	final DefaultRenderer myRenderer = buildCategoryRenderer(colorTmp);
+	
+	myRenderer.setChartTitle("Category Sum of Cost from " + start_date.substring(0,4) + "-" 
+			+ start_date.substring(4,6) + "-" + start_date.substring(6) + " to " 
+			+ end_date.substring(0,4) + "-" + end_date.substring(4,6) + "-" + end_date.substring(6));
+	myRenderer.setChartTitleTextSize(50);
+	myRenderer.setLabelsTextSize(30);
+	myRenderer.setLegendTextSize(30);
+	myRenderer.setLabelsColor(Color.BLACK);
+	myRenderer.setZoomEnabled(false);
+	myRenderer.setShowLabels(true);
+	myRenderer.setDisplayValues(true);
+	myRenderer.setPanEnabled(false);
+	myRenderer.setShowLegend(false);
+	
+	myChartView = ChartFactory.getDoughnutChartView(this, mySeries, myRenderer);
+	myChartView.repaint();
+	layout.addView(myChartView);
+}
+
+
+public void showLineChart(final String[] titles, final List<double[]> xvalue, final List<double[]> yvalue){
+	LinearLayout layout = (LinearLayout) findViewById(R.id.chart);
+	layout.removeAllViews();
+	
+	
+	XYMultipleSeriesDataset myDataset = buildDataset(titles, xvalue, yvalue);
+	XYMultipleSeriesRenderer myRenderer = buildRenderer(colors, styles);
+
+//	double[] x_tmp = xvalue.get(0);
+//	double x_min=999999999, x_max = -999999999;
+//	for(int i=0;i<x_tmp.length;i++){
+//		if(x_tmp[i]<x_min) x_min=x_tmp[i];
+//		if(x_tmp[i]>x_max) x_max=x_tmp[i];
+//	}
+	
+	double[] y_tmp = yvalue.get(0);
+	double y_min=999999999, y_max = -999999999;
+	for(int i=0;i<y_tmp.length;i++){
+		if(y_tmp[i]<y_min) y_min=y_tmp[i];
+		if(y_tmp[i]>y_max) y_max=y_tmp[i];
+	}
+	
+	myRenderer.setChartTitle("Sum of daily cost in " + monthChoice[choice]);
+	myRenderer.setChartTitleTextSize(50);
+	myRenderer.setLabelsTextSize(30);
+	myRenderer.setLegendTextSize(30);
+	myRenderer.setPointSize(5);
+	myRenderer.setShowLegend(false);
+
+	for (int i = 0; i < 31; i++) {
+		myRenderer.addXTextLabel(i+1, ""+(i+1));
+	}
+	
+	myRenderer.setXLabels(0);
+	myRenderer.setXAxisMin(0);
+	myRenderer.setXAxisMax(32);
+
+	myRenderer.setYAxisMin(y_min*0.8);
+	myRenderer.setYAxisMax(y_max*1.2);
+	
+	myRenderer.setShowGrid(true);
+	myRenderer.setZoomEnabled(false);
+	myRenderer.setXLabelsAlign(Align.RIGHT);
+	myRenderer.setYLabelsAlign(Align.RIGHT);
+	myRenderer.setZoomButtonsVisible(false);
+	myRenderer.setPanEnabled(false);
+	
+	myRenderer.setAxesColor(Color.BLACK);
+	myRenderer.setLabelsColor(Color.BLACK);
+	myRenderer.setBackgroundColor(Color.WHITE);
+	myRenderer.setApplyBackgroundColor(true);
+	myRenderer.setMarginsColor(Color.WHITE);
+	
+	myRenderer.setMargins(new int[] {30,200,30,30});
+	
+	myChartView = ChartFactory.getLineChartView(this, myDataset, myRenderer);
+	myChartView.repaint();
+
+	layout.addView(myChartView);
+
+	
+	myRenderer.setClickEnabled(true);
+	myRenderer.setSelectableBuffer(100);
+	myChartView.setOnClickListener(new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			SeriesSelection mySeriesSelection = myChartView.getCurrentSeriesAndPoint();
+			if (mySeriesSelection == null) {
+				Toast.makeText(CostBox.this, "No chart element", Toast.LENGTH_SHORT).show();
+			} else {
+				Toast.makeText(CostBox.this, "The total cost of day " + mySeriesSelection.getXValue()
+						+ " in " +  monthChoice[choice] + " is " + mySeriesSelection.getValue() + ".",
+						Toast.LENGTH_SHORT).show();;
+			}
+		}
+	});
+}
+
+/*
+ * The following methods are used to build the chart more quickly and conveniently.
+ */
+
+/*
+ * The following three methods are used for pie chart.
+ */
+protected CategorySeries buildCategoryDataset(String title, String[] categories, double[] values) {
+	CategorySeries series = new CategorySeries(title);
+	int length = categories.length;
+	for (int i = 0; i < length; i++){
+		series.add(categories[i], values[i]);
+	}
+	return series;
+}
+
+protected MultipleCategorySeries buildMultipleCategoryDataset(String title,
+		List<String[]> categories, List<double[]> values) {
+	MultipleCategorySeries series = new MultipleCategorySeries(title);
+	int k=0;
+	for (double[] value : values) {
+		series.add(categories.get(k), value);
+		k++;
+	}
+	return series;
+}
+
+protected DefaultRenderer buildCategoryRenderer(int[] colors) {
+	DefaultRenderer renderer = new DefaultRenderer();
+	for (int color : colors) {
+		SimpleSeriesRenderer r = new SimpleSeriesRenderer();
+		r.setColor(color);
+		renderer.addSeriesRenderer(r);
+	}
+	return renderer;
+}
+
+
+/*
+ * The following methods are used for line charts
+ */
+
+protected XYMultipleSeriesDataset buildDataset(String[] titles, List<double[]> xValues, List<double[]> yValues) {
+	XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
+	addXYSeries(dataset, titles, xValues, yValues, 0);
+	return dataset;
+}
+
+public void addXYSeries(XYMultipleSeriesDataset dataset, String[] titles, List<double[]> xValues,List<double[]> yValues, int scale) {
+	int length = titles.length;
+	for (int i = 0; i < length; i++) {
+		XYSeries series = new XYSeries(titles[i], scale);
+		double[] xV = xValues.get(i);
+		double[] yV = yValues.get(i);
+		int seriesLength = xV.length;
+		for (int k = 0; k < seriesLength; k++) {
+			series.add(xV[k], yV[k]);
+		}
+		dataset.addSeries(series);
+	}
+}
+
+protected XYMultipleSeriesRenderer buildRenderer(int[] colors, PointStyle[] styles) {
+	XYMultipleSeriesRenderer renderer = new XYMultipleSeriesRenderer();
+	setRenderer(renderer, colors, styles);
+	return renderer;
+}
+
+protected void setRenderer(XYMultipleSeriesRenderer renderer, int[] colors, PointStyle[] styles) {
+	int length = colors.length;
+	for (int i = 0; i < length; i++) {
+		XYSeriesRenderer r = new XYSeriesRenderer();
+		r.setColor(colors[i]);
+		r.setPointStyle(styles[i]);
+		r.setFillPoints(true);
+		r.setDisplayChartValues(true);
+		r.setDisplayChartValuesDistance(40);
+		r.setChartValuesTextSize(30);
+		renderer.addSeriesRenderer(r);
+	}
+}
+}
+/*
+ * the following is about charview
+*/

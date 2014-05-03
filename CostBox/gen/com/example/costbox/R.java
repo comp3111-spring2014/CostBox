@@ -515,8 +515,8 @@ containing a value of this type.
         public static final int calendar=0x7f060039;
         public static final int cate_image=0x7f06001d;
         public static final int cate_image2=0x7f06003c;
-        public static final int category_adding=0x7f060054;
-        public static final int category_delete=0x7f060055;
+        public static final int category_adding=0x7f060053;
+        public static final int category_delete=0x7f060054;
         public static final int category_image=0x7f060005;
         public static final int category_name=0x7f060006;
         public static final int chart=0x7f060052;
@@ -554,7 +554,7 @@ containing a value of this type.
         public static final int edit_context_below_fragment=0x7f06002e;
         public static final int end=0x7f06004c;
         public static final int enddate=0x7f06004d;
-        public static final int file=0x7f06005a;
+        public static final int file=0x7f060058;
         public static final int fragment_linear=0x7f06002f;
         public static final int head_contentLayout=0x7f060032;
         public static final int head_tipsTextView=0x7f060033;
@@ -569,22 +569,20 @@ containing a value of this type.
         public static final int listTextView1=0x7f06003e;
         public static final int local_flag=0x7f060040;
         public static final int main_linear=0x7f060041;
-        public static final int menu_about=0x7f06005d;
-        public static final int menu_delete=0x7f060056;
-        public static final int menu_edit=0x7f060057;
-        public static final int menu_help=0x7f06005c;
-        public static final int menu_search=0x7f060059;
-        public static final int menu_setting=0x7f06005b;
-        public static final int menu_share=0x7f060058;
+        public static final int menu_about=0x7f06005b;
+        public static final int menu_delete=0x7f060055;
+        public static final int menu_help=0x7f06005a;
+        public static final int menu_search=0x7f060057;
+        public static final int menu_setting=0x7f060059;
+        public static final int menu_share=0x7f060056;
         public static final int myListView=0x7f060045;
         public static final int normal=0x7f060001;
         public static final int picker_subtitle=0x7f060016;
         public static final int piechart=0x7f06004f;
-        public static final int progressBar1=0x7f060053;
         public static final int quickchoice=0x7f06004e;
         public static final int returnbt=0x7f060021;
         public static final int scr=0x7f060003;
-        public static final int search_search=0x7f06005e;
+        public static final int search_search=0x7f06005c;
         public static final int searchrusult=0x7f060047;
         public static final int shareButton=0x7f060024;
         public static final int skipandenter=0x7f060026;
@@ -627,8 +625,7 @@ containing a value of this type.
         public static final int precategoryitem=0x7f030019;
         public static final int search=0x7f03001a;
         public static final int searchlist=0x7f03001b;
-        public static final int summary=0x7f03001c;
-        public static final int transist=0x7f03001d;
+        public static final int summary_layout=0x7f03001c;
     }
     public static final class menu {
         public static final int categoryedit=0x7f0c0000;

@@ -37,6 +37,7 @@
             android:layout_marginRight="20dp"
             android:background="@drawable/editttbg"
             android:ems="10"
+            android:focusable="false"
             android:textColor="@drawable/white"
             android:textSize="20sp" >
 
