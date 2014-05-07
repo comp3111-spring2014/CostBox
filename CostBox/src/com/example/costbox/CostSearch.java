@@ -176,54 +176,39 @@ public class CostSearch extends Activity
   /* The following method is used to set up the action mode callback
    * delete,edit,share
    */
-//  private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
-//		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-//			// Respond to clicks on the actions in the CAB
-//			switch (item.getItemId()) {
-//			case R.id.menu_delete:
-//				CostSearch.deleteTodo();
-//		        Toast.makeText( CostSearch.this, "deleted Successful", Toast.LENGTH_LONG).show(); 		
-//				result_count=myCursor.getCount();
-//			    searchresult.setText("Find "+result_count+" totally");
-//		        mode.finish(); 
-//				return true;
-//
-//			case R.id.menu_edit:
-//
-//				Intent intent=new Intent();
-//		        intent.setClass(CostSearch.this, CostDetail.class);
-//		        Bundle bundle = new Bundle();
-//		        bundle.putString("category",myCursor.getString(3));
-//		        bundle.putString("comments",myCursor.getString(4));
-//		        bundle.putDouble("cost",myCursor.getDouble(6));
-//		        bundle.putString("picture", myCursor.getString(5));
-//		        bundle.putInt("date",myCursor.getInt(1));
-//		        bundle.putString("back_Identifier","false" ); 
-//		        intent.putExtras(bundle);
-//		        startActivityForResult(intent,0);
-//		        overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-//				mode.finish();
-//				return true;
-//
-//			default:
-//				return false;
-//			
-//			}
-//  		
-//		}
-//
-//  	public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-//
-//			_currentItemView.setBackgroundResource(R.drawable.rouhe1);
-//			return true;
-//		}
-//  	    public void onDestroyActionMode(ActionMode mode) {
-//  		  _currentItemView.setBackgroundResource(R.drawable.itembg);  //return the color back
-//		}
-//		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-//			return false;
-//		}
-//	}; 
+  private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+			// Respond to clicks on the actions in the CAB
+			switch (item.getItemId()) {
+			case R.id.menu_delete:
+				CostSearch.deleteTodo();
+		        Toast.makeText( CostSearch.this, "deleted Successful", Toast.LENGTH_LONG).show(); 		
+				result_count=myCursor.getCount();
+			    searchresult.setText("Find "+result_count+" totally");
+		        mode.finish(); 
+				return true;
+
+
+
+			default:
+				return false;
+			
+			}
+  		
+		}
+
+  	public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+
+			_currentItemView.setBackgroundResource(R.drawable.rouhe1);
+			return true;
+		}
+  	    public void onDestroyActionMode(ActionMode mode) {
+  		  _currentItemView.setBackgroundResource(R.drawable.itembg);  //return the color back
+		}
+		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+			return false;
+		}
+	}; 
 	// used for action bar implementation 
 @Override
   public boolean onCreateOptionsMenu(final Menu menu) {
@@ -267,25 +252,7 @@ public class CostSearch extends Activity
 }
 
   //orientation change function
-//public void onConfigurationChanged(Configuration newConfig){
-//		super.onConfigurationChanged(newConfig);
-//		if(this.getResources().getConfiguration().orientation 
-//				== Configuration.ORIENTATION_LANDSCAPE){
-//			//setContentView(R.layout.summary);
-//			//setContentView(R.layout.transist);
-//			Intent intent = new Intent();
-//			intent.setClass(CostSearch.this,com.example.costbox.chartview.Summary.class);
-//			startActivityForResult(intent,1);
-//			overridePendingTransition(R.anim.fadein, R.anim.fadeout);
-//			//this.finish();
-//			
-//		} else if(this.getResources().getConfiguration().orientation 
-//				== Configuration.ORIENTATION_PORTRAIT){
-//			//Toast.makeText(getApplicationContext(), "PORTRAIT", Toast.LENGTH_SHORT).show();
-//		}
-//		
-//	}
-  
+
 @Override
 protected void onActivityResult(int requestCode, int resultCode, Intent data) 
 {
@@ -341,72 +308,71 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data)
 	
 }
 
-//
-//private static void deleteTodo()
-//{
-//  if(_id == 0)
-//  return;
-//  myCostDB.delete(_id); 
-//  myCursor.requery();
-//  Searchlist.invalidateViews(); 
-//
-//  _currentItemView.setBackgroundResource(R.drawable.itembg);
-//  _id = 0; 
-//
-//}
+
+private static void deleteTodo()
+{
+  if(_id == 0)
+  return;
+  myCostDB.delete(_id); 
+  myCursor.requery();
+  Searchlist.invalidateViews(); 
+
+  _currentItemView.setBackgroundResource(R.drawable.itembg);
+  _id = 0; 
+
+}
 
 /*
 * make the date into String int the form of YYYY-MM-DD
 */
-//public String Date_format_transfer(int date)
-//{     
-//	    String Date=date+"";
-//	    String temp="";
-//	    for(int i=6;i<8;i++)
-//	    	temp+=Date.charAt(i);
-//	    temp+=" ";
-//	    //DD 
-//	    int Month=0;
-//	    Month=(int)(Date.charAt(4)-'0')*10+(int)(Date.charAt(5)-'0');
-//	    //Month=4;
-//	    switch (Month)
-//	    {
-//	    case 1:
-//	    	temp+="January ";break;
-//	    case 2:
-//	    	temp+="Feburary ";break;
-//	    case 3:
-//	    	temp+="March ";break;
-//	    case 4:
-//	    	temp+="April ";break;
-//	    case 5:
-//	    	temp+="May ";break;
-//	    case 6:
-//	    	temp+="June ";break;
-//	    case 7:
-//	    	temp+="July ";break;
-//	    case 8:
-//	    	temp+="August ";break;
-//	    case 9:
-//	    	temp+="September ";break;
-//	    case 10:
-//	    	temp+="October ";break;
-//	    case 11:
-//	    	temp+="November ";break;
-//	    case 12:
-//	    	temp+="December ";break;
-//	    default:
-//	    	temp+="May" ;break;
-//	    };
-//	    for(int i=0;i<4;i++)
-//	    	temp+=Date.charAt(i);
-//
-//	    return temp;
-//}
+public String Date_format_transfer(int date)
+{     
+	    String Date=date+"";
+	    String temp="";
+	    for(int i=6;i<8;i++)
+	    	temp+=Date.charAt(i);
+	    temp+=" ";
+	    //DD 
+	    int Month=0;
+	    Month=(int)(Date.charAt(4)-'0')*10+(int)(Date.charAt(5)-'0');
+	    //Month=4;
+	    switch (Month)
+	    {
+	    case 1:
+	    	temp+="January ";break;
+	    case 2:
+	    	temp+="Feburary ";break;
+	    case 3:
+	    	temp+="March ";break;
+	    case 4:
+	    	temp+="April ";break;
+	    case 5:
+	    	temp+="May ";break;
+	    case 6:
+	    	temp+="June ";break;
+	    case 7:
+	    	temp+="July ";break;
+	    case 8:
+	    	temp+="August ";break;
+	    case 9:
+	    	temp+="September ";break;
+	    case 10:
+	    	temp+="October ";break;
+	    case 11:
+	    	temp+="November ";break;
+	    case 12:
+	    	temp+="December ";break;
+	    default:
+	    	temp+="May" ;break;
+	    };
+	    for(int i=0;i<4;i++)
+	    	temp+=Date.charAt(i);
+
+	    return temp;
+}
 /*
 * make the date into int in the form of YYYYMMDD
 */
-
 public static int Date_int_transfer()
 {
 	  	String temp = "";
@@ -431,21 +397,21 @@ public static int Date_int_transfer()
  * return String
  * input currentday(String) & dayAddNum(Integer) +/- number
  */
-//public static String getDateStr(String day,long dayAddNum)  {
-//		SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
-//		Date nowDate = null;
-//		
-//			try {
-//				nowDate = df.parse(day);
-//			} catch (java.text.ParseException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		
-//		Date newDate2 = new Date(nowDate.getTime() + dayAddNum * 24 * 60 * 60 * 1000);
-//		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
-//		String dateOk = simpleDateFormat.format(newDate2);
-//		return dateOk;
-//	}
-//  
+public static String getDateStr(String day,long dayAddNum)  {
+		SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+		Date nowDate = null;
+		
+			try {
+				nowDate = df.parse(day);
+			} catch (java.text.ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+		Date newDate2 = new Date(nowDate.getTime() + dayAddNum * 24 * 60 * 60 * 1000);
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+		String dateOk = simpleDateFormat.format(newDate2);
+		return dateOk;
+	}
+  
 }
