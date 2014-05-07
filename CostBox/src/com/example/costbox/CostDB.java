@@ -234,5 +234,5 @@ public class CostDB extends SQLiteOpenHelper
     }
     return sum_of_single_day;
   }
-
+  
 }
